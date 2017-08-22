@@ -1,2 +1,5 @@
-# ShellScript
-一些Shell脚本
+Shell Script
+===
+
+- [Initialize Ubuntu(Server)](./Initialize Ubuntu(Server).sh)
+- [Initialize Ubuntu(Clinet)](./Initialize Ubuntu(Client).sh)
