@@ -1,12 +1,5 @@
-#!/bin/sh
-# @Date    : 2017-03-30 19:58:52
-# @Author  : Xu
-# @Link    : http://xuccc.github.io/
-# @Version : $Id$
-# @Description:
-
 DIR="$( cd "$( dirname "$0"  )" && pwd  )"
-ali_sources="# deb cdrom:[Ubuntu 16.04 LTS _Xenial Xerus_ - Release amd64 (20160420.1)]/ xenial main restricted\ndeb-src http://archive.ubuntu.com/ubuntu xenial main restricted #Added by software-properties\ndeb http://mirrors.aliyun.com/ubuntu/ xenial main restricted\ndeb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted multiverse universe #Added by software-properties\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted\ndeb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted multiverse universe #Added by software-properties\ndeb http://mirrors.aliyun.com/ubuntu/ xenial universe\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe\ndeb http://mirrors.aliyun.com/ubuntu/ xenial multiverse\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-updates multiverse\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse\ndeb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse #Added by software-properties\ndeb http://archive.canonical.com/ubuntu xenial partner\ndeb-src http://archive.canonical.com/ubuntu xenial partner\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted\ndeb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted multiverse universe #Added by software-properties\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-security universe\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse"
+ali_sources="deb http://mirrors.aliyun.com/ubuntu/ trusty main restricted universe multiverse\ndeb http://mirrors.aliyun.com/ubuntu/ trusty-security main restricted universe multiverse\ndeb http://mirrors.aliyun.com/ubuntu/ trusty-updates main restricted universe multiverse\ndeb http://mirrors.aliyun.com/ubuntu/ trusty-proposed main restricted universe multiverse\ndeb http://mirrors.aliyun.com/ubuntu/ trusty-backports main restricted universe multiverse\ndeb-src http://mirrors.aliyun.com/ubuntu/ trusty main restricted universe multiverse\ndeb-src http://mirrors.aliyun.com/ubuntu/ trusty-security main restricted universe multiverse\ndeb-src http://mirrors.aliyun.com/ubuntu/ trusty-updates main restricted universe multiverse\ndeb-src http://mirrors.aliyun.com/ubuntu/ trusty-proposed main restricted universe multiverse\ndeb-src http://mirrors.aliyun.com/ubuntu/ trusty-backports main restricted universe multiverse"
 backup_path="/media/xu/Backups/ubuntu"
 success=""
 fail=""
@@ -74,9 +67,6 @@ environment_deployment(){
 	printf "[global]\nindex-url = https://pypi.tuna.tsinghua.edu.cn/simple\n" >> .pip/pip.conf
 	pip install --upgrade pip
 
-	pip install lxml
-	pip install requests
-	pip install gmpy
 
 	send_command "add-apt-repository ppa:webupd8team/java" "Ctrl+c" "\r"
 	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -117,6 +107,7 @@ environment_deployment(){
 	install_tools "docker-ce"
 	if [ $? -eq 0 ];then
 		printf "{\n\t\"registry-mirrors\": [\"https://docker.mirrors.ustc.edu.cn\"]\n}\n" >> /etc/docker/daemon.json
+		sudo gpasswd -a ${USER} docker
 	else
 		message "Install docker failed"
 	fi
@@ -128,14 +119,16 @@ my_tools(){
 	install_tools "vim"
 	install_tools "tmux"
 	echo "set-option -g prefix C-a\nunbind ^a\nbind -r ^a next-window" > ~/.tmux.conf
+	pip install --user powerline-status
+	su xu --shell=/bin/bash -c "echo \"source \"~/.local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf\"\" > .tmux.conf"
 	install_tools "ipython"
 	install_tools "zsh"
 
 	if [ $? -eq 0 ];then
 		su xu --shell=/bin/bash -c "wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh"
-		echo "zsh" >> $DIR/.bashrc
 		sed -i 's/robbyrussell/ys/g' $DIR/.zshrc
 		sed -i 's/(git)/(git extract autojump wd)/g' $DIR/.zshrc
+		su xu --shell=/bin/bash -c "chsh -s /bin/zsh"
 	else
 		message "zsh install failed"
 	fi
@@ -154,8 +147,9 @@ main(){
 	system_setting
 	update_system
 	basic_install
-	environment_deployment
 	my_tools
+	environment_deployment
+
 
 	echo "----------------Successfully installed-------------------------------"
 	message $success

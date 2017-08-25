@@ -1,10 +1,3 @@
-#!/bin/sh
-# @Date    : 2017-03-30 19:58:52
-# @Author  : Xu (2604133533@qq.com)
-# @Link    : http://xuccc.github.io/
-# @Version : $Id$
-# @Description:
-
 DIR="$( cd "$( dirname "$0"  )" && pwd  )"
 ali_sources="# deb cdrom:[Ubuntu 16.04 LTS _Xenial Xerus_ - Release amd64 (20160420.1)]/ xenial main restricted\ndeb-src http://archive.ubuntu.com/ubuntu xenial main restricted #Added by software-properties\ndeb http://mirrors.aliyun.com/ubuntu/ xenial main restricted\ndeb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted multiverse universe #Added by software-properties\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted\ndeb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted multiverse universe #Added by software-properties\ndeb http://mirrors.aliyun.com/ubuntu/ xenial universe\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe\ndeb http://mirrors.aliyun.com/ubuntu/ xenial multiverse\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-updates multiverse\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse\ndeb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse #Added by software-properties\ndeb http://archive.canonical.com/ubuntu xenial partner\ndeb-src http://archive.canonical.com/ubuntu xenial partner\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted\ndeb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted multiverse universe #Added by software-properties\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-security universe\ndeb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse"
 backup_path="/media/xu/Backups/ubuntu"
@@ -232,21 +225,16 @@ send_command(){
 	}
 	expect eof
 EOF
-	# spawn $1
-	# expect
-	# {
-	# 	$2 {send $3}
-	# }
 }
 main(){
-	#system_setting
-	#delete_infrequently_used_software
-	#update_system
-	#backup_system
-	#basic_install
-	#environment_deployment
-	#environment_embellish
-	#my_tools
+	system_setting
+	delete_infrequently_used_software
+	update_system
+	backup_system
+	basic_install
+	environment_deployment
+	environment_embellish
+	my_tools
 	common_software_installation
 
 	echo "----------------Successfully installed-------------------------------"
