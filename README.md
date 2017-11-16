@@ -1,16 +1,44 @@
-Shell Script
+Init Ubuntu
 ===
 
-- Initialize Ubuntu
+## 截图
 
-	> 初始化 Ubuntu 的Shell脚本，包括：
+菜单
 
-	> **pip,docker,ruby**等环境配置，**zsh vim tmux**等常用工具的安装及个性化设定
+![menu](images/menu.png)
 
-	> 客户端版集成了一些无用软件的删除，美化，常用工具的安装，包括：
+运行截图
 
-	> **unity-tweak-tools docky**美化相关，**wps bleachbit gimp steam 网易云**等等常用软件的安装
+![run](images/run.png)
 
+## 配置文件
 
-	- Server
-	- Ubuntu
+- tmux
+
+集成了个人最常用的几个功能   
+
+https://gist.github.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22
+
+- 各种源的替换,按需求取消对应注释即可
+
+```sh
+# pip
+printf "[global]\nindex-url = https://pypi.tuna.tsinghua.edu.cn/simple\n" >> .pip/pip.conf
+
+# npm
+gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org
+
+# docker
+echo -e "{\n\t\"registry-mirrors\": [\"https://docker.mirrors.ustc.edu.cn\"]\n}\n" >> /etc/docker/daemon.json
+```
+
+## 最终效果
+
+### 终端
+
+![term](images/term.png)
+
+### Desktop图形化
+
+TODO
+
