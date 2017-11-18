@@ -13,6 +13,15 @@ Init Ubuntu
 
 ## 配置文件
 
+- source.list
+
+可以自己切换为Aliyun的,感觉最近Aliyun update有点慢 = =
+
+```sh
+sudo sed -i 's/[a-zA-Z]*.archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+# sudo sed -i 's/[a-zA-Z]*.archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+```
+
 - tmux
 
 集成了个人最常用的几个功能   
@@ -40,5 +49,5 @@ echo -e "{\n\t\"registry-mirrors\": [\"https://docker.mirrors.ustc.edu.cn\"]\n}\
 
 ### Desktop图形化
 
-TODO
+![desktop](images/desktop.png) 
 
