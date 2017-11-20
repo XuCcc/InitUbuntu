@@ -22,7 +22,7 @@ sudo sed -i 's/[a-zA-Z]*.archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sour
 # sudo sed -i 's/[a-zA-Z]*.archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
 ```
 
-- tmux
+- zsh && tmux
 
 集成了个人最常用的几个功能   
 
@@ -49,5 +49,5 @@ echo -e "{\n\t\"registry-mirrors\": [\"https://docker.mirrors.ustc.edu.cn\"]\n}\
 
 ### Desktop图形化
 
-![desktop](images/desktop.png) 
+![desktop](images/desktop.png)
 

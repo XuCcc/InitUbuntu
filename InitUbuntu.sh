@@ -80,7 +80,7 @@ configEnv(){
 	tmpUpdate
 
 	aptInstall "python-pip"
-	mkdir -p  .pip
+	mkdir -p  ~/.pip
 	# info "Set pip source to https://pypi.tuna.tsinghua.edu.cn/simple"
 	# printf "[global]\nindex-url = https://pypi.tuna.tsinghua.edu.cn/simple\n" >> .pip/pip.conf
 	sudo pip install --upgrade pip
@@ -127,15 +127,14 @@ commonTools(){
 	aptInstall "vim"
 	aptInstall "tmux"
 	sudo pip install  powerline-status
-	wget -O .tmux.conf https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/e426d859ba69901e4ac3d4a7adb9ab8c4896aaa9/tmux.conf
+	wget -O ~/.tmux.conf https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/e426d859ba69901e4ac3d4a7adb9ab8c4896aaa9/tmux.conf
 
 	aptInstall "screenfetch"
 	aptInstall "ipython"
 	aptInstall "zsh"
 	if [ $? -eq 0 ];then
 		wget -q  https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
-		sed -i 's/robbyrussell/half-life/g' .zshrc
-		sed -i 's/  git/git extract wd/g'  .zshrc
+		wget -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/f58d03c981b0c278ca8a4fe3bede84f2cfc9bf25/zshrc
 		chsh -s /bin/zsh
 	else
 		fail "zsh install failed"
