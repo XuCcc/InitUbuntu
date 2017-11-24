@@ -125,6 +125,12 @@ configEnv(){
 
 commonTools(){
 	aptInstall "vim"
+	aptInstall "vim-nox"
+	aptInstall "ctags"
+	info "Install spf13-vim"
+	curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
+	echo "let g:airline_powerline_fonts=1" > ~/.vimrc.before.local	# airline
+
 	aptInstall "tmux"
 	sudo pip install  powerline-status
 	wget -O ~/.tmux.conf https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/e426d859ba69901e4ac3d4a7adb9ab8c4896aaa9/tmux.conf
@@ -214,6 +220,7 @@ desktopTools(){
 			sudo add-apt-repository -y ppa:nathan-renniewaldock/flux
 			tmpUpdate
 			aptInstall "fluxgui"
+			;;
 			"b")
 			clear
 			break
