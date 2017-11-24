@@ -2,43 +2,71 @@
 
 stty erase ^h
 
-PWD=`pwd`
+INCHINA=0 
 
-info(){
+# banner
+function welcome(){
+	echo -e "\033[36m
+   ____     _ __          __  ____             __
+  /  _/__  (_) /_        / / / / /  __ _____  / /___ __
+ _/ // _ \/ / __/       / /_/ / _ \/ // / _ \/ __/ // /
+/___/_//_/_/\__/        \____/_.__/\_,_/_//_/\__/\_,_/
+
+\033[0m"
+}
+
+# pretty output
+function info(){
 	echo -e "\033[34m[*]\033[0m" ${1}
 }
 
-fail(){
+function warn(){
+	echo -e "\033[33m[!]\033[0m" ${1}
+}
+
+function fail(){
 	echo -e "\033[31m[-]\033[0m" ${1}
 }
 
-success(){
+function success(){
 	echo -e "\033[32m[+]\033[0m" ${1}
 }
-aptInstall(){
+
+function waiting(){
+  echo -e -n "\033[5m[.]\033[5m" ${1}
+}
+
+
+function aptInstall(){
 	sudo rm -rf /var/lib/dpkg/lock
 	sudo rm -rf /var/cache/apt/archives/lock
 	info "Install ${1}"
-	info "Waiting"
-	sudo apt install -y $1 > /dev/null
-	if [ $? -eq 0 ];then
+	warn "Waiting"
+	if sudo apt-get install -y $1 > /dev/null;then
 		success "Install ${1} Success"
-		sleep 1
 	else
 		fail "Install ${1} Failed"
-		sleep 1
 	fi
 }
 
-autoSend(){
-	expect<<EOF
-	spawn $1
-	expect {
-		$2 {send $3}
-	}
-	expect eof
-EOF
+function tmpUpdate(){
+	info "Update system"
+	warn "Waiting"
+	sudo rm -rf /var/lib/dpkg/lock
+	sudo rm -rf /var/cache/apt/archives/lock
+	sudo apt-get update > /dev/null
 }
+
+
+# autoSend(){
+# 	expect<<EOF
+# 	spawn $1
+# 	expect {
+# 		$2 {send $3}
+# 	}
+# 	expect eof
+# EOF
+# }
 
 updateSource(){
 	info "Change sources to USTC"
@@ -53,95 +81,92 @@ updateSystem(){
 }
 
 
-tmpUpdate(){
-	info "Update system"
-	success "Waiting"
-	sudo rm -rf /var/lib/dpkg/lock
-	sudo rm -rf /var/cache/apt/archives/lock
-	sudo apt-get update > /dev/null
+
+function basicTools(){
+	if [ ${1} -eq 1 ];then
+		aptInstall "curl"
+	elif [ ${1} -eq 2 ];then
+		aptInstall "git"
+	fi
 }
 
-basicInstall(){
-	info "Basic installation:curl,git,expect"
-
-	aptInstall "expect"
-	aptInstall "curl"
-	aptInstall "git"
-	# sed -i 's/start on runlevel/#start on runlevel/g' /etc/init/ssh.conf
-
+function terminalTools(){
+	if [ ${1} -eq 1 ];then
+	aptInstall "zsh"
+		if [ $? -eq 0 ];then
+			wget -q  https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
+			# config for zsh
+			wget -q -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/f58d03c981b0c278ca8a4fe3bede84f2cfc9bf25/zshrc
+			chsh -s /bin/zsh
+		else
+			fail "zsh install failed"
+		fi
+	elif [ ${1} -eq 2 ];then
+		aptInstall "tmux"
+		# config for tmux
+		wget -q -O ~/.tmux.conf https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/e426d859ba69901e4ac3d4a7adb9ab8c4896aaa9/tmux.conf
+	elif [ ${1} -eq 3 ];then
+		info "Install powerline-status"
+		sudo pip -q install powerline-status
+	elif [ ${1} -eq 4 ];then
+		aptInstall "ttf-mscorefonts-installer"
+		aptInstall "fontconfig"
+		info "Install SpaceVim"
+		curl -sLf https://spacevim.org/install.sh | bash
+	fi
 }
 
-configEnv(){
-	sudo add-apt-repository -y ppa:webupd8team/java
+function developTools(){
 
-	curl -fsSL https://download.docker.com/linux/ubuntu/gpg |  sudo apt-key add -
-	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-
-	tmpUpdate
-
-	aptInstall "python-pip"
-	mkdir -p  ~/.pip
-	# info "Set pip source to https://pypi.tuna.tsinghua.edu.cn/simple"
+# info "Set pip source to https://pypi.tuna.tsinghua.edu.cn/simple"
 	# printf "[global]\nindex-url = https://pypi.tuna.tsinghua.edu.cn/simple\n" >> .pip/pip.conf
-	sudo pip install --upgrade pip
-
-	aptInstall "default-jre"
-	aptInstall "default-jdk"
-	aptInstall "oracle-java8-installer"
-	if [ $? -eq 0 ];then
-		sudo update-alternatives --config java
-	else
-		fail "Install java failed"
-	fi
-
-	aptInstall "ruby-full"
-	if [ $? -eq 0 ];then
-		echo
-		# gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/
-	else
-		fail "Install Ruby failed"
-	fi
-
-	info "Install node.js v6.10.1"
-	wget -q  -O node-v6.10.1.tar.xz https://npm.taobao.org/mirrors/node/v6.10.1/node-v6.10.1-linux-x64.tar.xz
-	tar -xJf node-v6.10.1.tar.xz
-	sudo mv node-v6.10.1-linux-x64/  /opt/
-	sudo ln -s /opt/node-v6.10.1-linux-x64/bin/node  /usr/local/bin/
-	sudo ln -s /opt/node-v6.10.1-linux-x64/bin/npm /usr/local/bin/
-	sudo ln -s /opt/node-v6.10.1-linux-x64/lib/node_modules/npm/bin/node-gyp-bin/node-gyp /usr/local/bin/
 	# info "Set npm registry to https://registry.npm.taobao.org"
 	# npm config set registry https://registry.npm.taobao.org
-	rm node-v6.10.1.tar.xz
-	rm -rf node-v6.10.1-linux-x64
 
-	aptInstall "docker-ce"
-	if [ $? -eq 0 ];then
-		# echo -e "{\n\t\"registry-mirrors\": [\"https://docker.mirrors.ustc.edu.cn\"]\n}\n" >> /etc/docker/daemon.json
-		sudo gpasswd -a ${USER} docker
-	else
-		fail "Install docker failed"
+
+	if [ ${1} -eq 1 ];then
+		aptInstall "python-pip"
+		# TODO 源
+	elif [ ${1} -eq 2 ];then
+		info "Install ptpython"
+		sudo pip -q install ptpython
+		# config for ptpython
+		mkdir -p ~/.ptpython
+		wget -q -O ~/.ptpython/config.py https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/d2ae31bc68ebaf18078ca9bbd8f7c03f50b5c94b/config.py
+	elif [ ${1} -eq 3 ];then
+		aptInstall "ruby-full"
+		# TODO 
+    elif [ ${1} -eq 4 ];then
+        sudo apt-get remove -y docker docker-engine docker.io
+        sudo apt-get install -y  apt-transport-https ca-certificates  software-properties-common
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	    sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        tmpUpdate
+        aptInstall "docker-ce"
+        if [ $? -eq 0 ];then
+            sudo gpasswd -a ${USER} docker
+        else
+            fail "Install docker failed"
+        fi
+    elif [ ${1} -eq 5 ];then
+        aptInstall "default-jdk"
+    elif [ ${1} -eq 6 ];then
+        curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
+        aptInstall "nodejs"
 	fi
 }
 
-commonTools(){
-	aptInstall "vim"
-	aptInstall "tmux"
-	sudo pip install  powerline-status
-	wget -O ~/.tmux.conf https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/e426d859ba69901e4ac3d4a7adb9ab8c4896aaa9/tmux.conf
-
-	aptInstall "screenfetch"
-	aptInstall "ipython"
-	aptInstall "zsh"
-	if [ $? -eq 0 ];then
-		wget -q  https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
-		wget -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/f58d03c981b0c278ca8a4fe3bede84f2cfc9bf25/zshrc
-		chsh -s /bin/zsh
-	else
-		fail "zsh install failed"
+function dailyTools(){
+	if [ ${1} -eq 1 ];then
+		aptInstall "screenfetch"
+	elif [ ${1} -eq 2 ];then
+		info "Install shadowsocks"
+		sudo pip install shadowsocks
+	elif [ ${1} -eq 3 ];then
+		echo
 	fi
 }
-
-systemSet(){
+	systemSet(){
 	info "Turn off warning"
 	sudo sed -i 's/enabled=1/enabled=0/g' /etc/default/apport
 
@@ -214,6 +239,7 @@ desktopTools(){
 			sudo add-apt-repository -y ppa:nathan-renniewaldock/flux
 			tmpUpdate
 			aptInstall "fluxgui"
+			;;
 			"b")
 			clear
 			break
@@ -249,75 +275,119 @@ desktopTools(){
 
 }
 
-main(){
+
+
+
+# Insttall Menu
+function installMain(){
 	clear
-	info "Initialize Ubuntu"
-	info "Chose one of the following"
-	while true
+    # Check GFW
+    info  "Find Address..Waiting"
+    msg=`curl  http://ipinfo.io/ -s`
+    if echo $msg|grep -Eqi "China";then
+        $INCHINA=1 
+        warn "In China"
+    else
+        success "Not In China"
+    fi
+    welcome
+    while true
 	do
-		echo
-		info "Ubuntu Serve"
-		echo
-		echo "1. Update source to USTC"
-		echo "2. Update system and install: curl,git,expect"
-		echo "3. Config environment: pip,java,ruby,nodejs,docker"
-		echo "4. Instal tools: vim,zsh,tmux,ipython"
-		echo "5. Auto Complete Step: 2-4"
-		echo
-		info "Ubuntu Desktop"
-		echo
-		echo "6. System Clean"
-		echo "7. Tools"
-		echo
-		info "Please input:"
+		info "Please choose the application:"
 
+		info "Basic Tools"
+		echo -e "11->curl\t\t 12->git"
+		echo -e "10->All Basic Tools"
+		info "Terminal Tools"
+		echo -e "21->oh-my-zsh\t 22->tmux\t 23->powerline\t 24->SpaceVim"
+		echo -e "20->All Terminal Tools"
+		info "Develop Tools"
+		echo -e "31->ipython\t 32->ptpython\t 33->ruby\t 34->Docker\t 35->JDK\t 36->NodeJs"
+		echo -e "30->All Develop Tools"
+		info "Daily Tools"
+		echo -e "41->screenfetch\t 42->shadowsocks"
+        echo -e "40->All Daily Tools"
+		warn "Exit"
+		echo -e "0 ->exit"
 
+		info "Your InPut"
+        echo -n "==> "
 		read choice
-		case "$choice" in
-			"1")
-			updateSource
-			clear
-			info "Update Source Done"
+		case $choice in
+			"0")
+			exit 0
 			;;
-			"2")
-			updateSystem
-			basicInstall
-			clear
-			info "Update System and Basicial install Done"
+			"10")
+			basicTools "1"
+			basicTools "2"
 			;;
-			"3")
-			configEnv
-			clear
-			info "Config Environment Done"
+			"11")
+			basicTools "1"
 			;;
-			"4")
-			commonTools
-			clear
-			info "Install Tools Done"
+			"12")
+			basicTools "2"
 			;;
-			"5")
-			updateSystem
-			basicInstall
-			configEnv
-			commonTools
+			"20")
+			terminalTools "1"
+			terminalTools "2"
+			terminalTools "3"
+            terminalTools "4"
 			;;
-			"6")
-			systemSet
-			systemClean
-			clear
-			info "Done"
+			"21")
+			terminalTools "1"
 			;;
-			"7")
-			desktopTools
+			"22")
+			terminalTools "2"
+			;;
+			"23")
+			terminalTools "3"
+			;;
+            "24")
+            terminalTools "4"
+            ;;
+			"30")
+			developTools "1"
+			developTools "2"
+			developTools "3"
+            developTools "4"
+            developTools "5"
+            developTools "6"
+			;;
+			"31")
+			developTools "1"
+			;;
+			"32")
+			developTools "2"
+			;;
+			"33")
+			developTools "3"
+			;;
+            "34")
+            developTools "4"
+            ;;
+            "35")
+            developTools "5"
+            ;;
+            "36")
+            developTools "6"
+            ;;
+            "40")
+            dailyTools "1"
+            dailyTools "2"
+            ;;
+            "41")
+			dailyTools "1"
+			;;
+			"42")
+			dailyTools "2"
 			;;
 			*)
-			clear
-			fail "Input ERROR"
+			fail "InPut ERROR"
 			;;
 		esac
+		echo
+		echo
 	done
 }
-
-
-main
+installMain
 
