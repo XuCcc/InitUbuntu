@@ -1,6 +1,6 @@
 language: bash
 script:
-- echo 5|bash InitUbuntu.sh
+- echo b|bash InitUbuntu.sh
 deploy:
   provider: releases
   api_key:

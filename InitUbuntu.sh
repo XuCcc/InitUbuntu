@@ -276,6 +276,8 @@ main(){
 		echo "6. System Clean"
 		echo "7. Tools"
 		echo
+		fail "b. Exit"
+		echo
 		info "Please input:"
 
 
@@ -316,6 +318,9 @@ main(){
 			;;
 			"7")
 			desktopTools
+			;;
+			"b")
+			exit 0
 			;;
 			*)
 			clear
