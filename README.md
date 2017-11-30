@@ -4,6 +4,7 @@
 [![Github release](https://img.shields.io/badge/release-0.1.0-green.svg)](https://github.com/XuCcc/InitUbuntu/releases/tag/0.1.0)
 [![platform](https://img.shields.io/badge/platform-ubuntu-lightgrey.svg)]()
 
+- [中文文档](README-cn.md)
 
 ## Screenshot
 
