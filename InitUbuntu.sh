@@ -4,41 +4,65 @@ stty erase ^h
 
 PWD=`pwd`
 
-info(){
+# banner
+function welcome(){
+	echo -e "\033[36m
+   ____     _ __          __  ____             __
+  /  _/__  (_) /_        / / / / /  __ _____  / /___ __
+ _/ // _ \/ / __/       / /_/ / _ \/ // / _ \/ __/ // /
+/___/_//_/_/\__/        \____/_.__/\_,_/_//_/\__/\_,_/
+
+\033[0m"
+}
+
+# pretty output
+function info(){
 	echo -e "\033[34m[*]\033[0m" ${1}
 }
 
-fail(){
+function warn(){
+	echo -e "\033[33m[!]\033[0m" ${1}
+}
+
+function fail(){
 	echo -e "\033[31m[-]\033[0m" ${1}
 }
 
-success(){
+function success(){
 	echo -e "\033[32m[+]\033[0m" ${1}
 }
-aptInstall(){
+
+
+function aptInstall(){
 	sudo rm -rf /var/lib/dpkg/lock
 	sudo rm -rf /var/cache/apt/archives/lock
 	info "Install ${1}"
-	info "Waiting"
-	sudo apt install -y $1 > /dev/null
-	if [ $? -eq 0 ];then
+	warn "Waiting"
+	if sudo apt-get install -y $1 > /dev/null;then
 		success "Install ${1} Success"
-		sleep 1
 	else
 		fail "Install ${1} Failed"
-		sleep 1
 	fi
 }
 
-autoSend(){
-	expect<<EOF
-	spawn $1
-	expect {
-		$2 {send $3}
-	}
-	expect eof
-EOF
+function tmpUpdate(){
+	info "Update system"
+	warn "Waiting"
+	sudo rm -rf /var/lib/dpkg/lock
+	sudo rm -rf /var/cache/apt/archives/lock
+	sudo apt-get update > /dev/null
 }
+
+
+# autoSend(){
+# 	expect<<EOF
+# 	spawn $1
+# 	expect {
+# 		$2 {send $3}
+# 	}
+# 	expect eof
+# EOF
+# }
 
 updateSource(){
 	info "Change sources to USTC"
@@ -53,13 +77,6 @@ updateSystem(){
 }
 
 
-tmpUpdate(){
-	info "Update system"
-	success "Waiting"
-	sudo rm -rf /var/lib/dpkg/lock
-	sudo rm -rf /var/cache/apt/archives/lock
-	sudo apt-get update > /dev/null
-}
 
 basicInstall(){
 	info "Basic installation:curl,git,expect"
@@ -256,6 +273,55 @@ desktopTools(){
 
 }
 
+function installMain(){
+	clear
+	while true
+	do
+		welcome
+		info "Please choose the application:"
+
+		info "Terminal Tools"
+		echo -e "11->oh-my-zsh\t 12->tmux"
+		info "Develop Tools"
+		echo -e "21->ipython\t 22->ptpython"
+		warn "Exit"
+		echo -e "0 ->exit"
+		read choice
+		case $choice in
+			"0")
+			exit 0
+			;;
+			"11")
+			aptInstall "zsh"
+				if [ $? -eq 0 ];then
+					wget -q  https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
+					# config for zsh
+					wget -q -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/f58d03c981b0c278ca8a4fe3bede84f2cfc9bf25/zshrc
+					chsh -s /bin/zsh
+				else
+					fail "zsh install failed"
+				fi
+			;;
+			"12")
+			aptInstall "tmux"
+			sudo pip -q install  powerline-status	
+			# config for tmux
+			wget -q -O ~/.tmux.conf https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/e426d859ba69901e4ac3d4a7adb9ab8c4896aaa9/tmux.conf
+			;;
+			"21")
+			aptInstall "python-pip"
+			;;
+			"22")
+			info "Install ptpython"
+			sudo pip -q install ptpython
+			# config for ptpython
+			mkdir -p ~/.ptpython
+			wget -q -O ~/.ptpython/config.py https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/d2ae31bc68ebaf18078ca9bbd8f7c03f50b5c94b/config.py
+			;;
+		esac
+	done
+}
+
 main(){
 	clear
 	info "Initialize Ubuntu"
@@ -330,6 +396,6 @@ main(){
 	done
 }
 
+installMain
 
-main
 
