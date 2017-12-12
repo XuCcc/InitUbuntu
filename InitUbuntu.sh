@@ -78,14 +78,60 @@ updateSystem(){
 
 
 
-basicInstall(){
-	info "Basic installation:curl,git,expect"
+function basicTools(){
+	if [ ${1} -eq 1 ];then
+		aptInstall "curl"
+	elif [ ${1} -eq 2 ];then
+		aptInstall "git"
+	fi
+}
 
-	aptInstall "expect"
-	aptInstall "curl"
-	aptInstall "git"
-	# sed -i 's/start on runlevel/#start on runlevel/g' /etc/init/ssh.conf
+function terminalTools(){
+	if [ ${1} -eq 1 ];then
+	aptInstall "zsh"
+		if [ $? -eq 0 ];then
+			wget -q  https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
+			# config for zsh
+			wget -q -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/f58d03c981b0c278ca8a4fe3bede84f2cfc9bf25/zshrc
+			chsh -s /bin/zsh
+		else
+			fail "zsh install failed"
+		fi
+	elif [ ${1} -eq 2 ];then
+		aptInstall "tmux"
+		# config for tmux
+		wget -q -O ~/.tmux.conf https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/e426d859ba69901e4ac3d4a7adb9ab8c4896aaa9/tmux.conf
+	elif [ ${1} -eq 3 ];then
+		info "Install powerline-status"
+		sudo pip -q install powerline-status
+	elif [ ${1} -eq 4 ];then
+		echo
+		# vim
+	fi
+}
 
+function developTools(){
+	if [ ${1} -eq 1 ];then
+		aptInstall "python-pip"
+	elif [ ${1} -eq 2 ];then
+		info "Install ptpython"
+		sudo pip -q install ptpython
+		# config for ptpython
+		mkdir -p ~/.ptpython
+		wget -q -O ~/.ptpython/config.py https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/d2ae31bc68ebaf18078ca9bbd8f7c03f50b5c94b/config.py
+	elif [ ${1} -eq 3 ];then
+		aptInstall "ruby-full"
+	fi
+}
+
+function dailyTools(){
+	if [ ${1} -eq 1 ];then
+		aptInstall "screenfetch"
+	elif [ ${1} -eq 2 ];then
+		echo
+	elif [ ${1} -eq 3 ];then
+		echo
+	fi
 }
 
 configEnv(){
@@ -273,52 +319,79 @@ desktopTools(){
 
 }
 
+
+
+
+# Insttall Menu
 function installMain(){
 	clear
+	welcome
 	while true
 	do
-		welcome
 		info "Please choose the application:"
 
+		info "Basic Tools"
+		echo -e "11->curl\t\t 12->git"
+		echo -e "10->All Basic Tools"
 		info "Terminal Tools"
-		echo -e "11->oh-my-zsh\t 12->tmux"
+		echo -e "21->oh-my-zsh\t 22->tmux\t 23->powerline"
+		echo -e "20->All Terminal Tools"
 		info "Develop Tools"
-		echo -e "21->ipython\t 22->ptpython"
+		echo -e "31->ipython\t 32->ptpython\t 33->ruby"
+		echo -e "30->All Develop Tools"
 		warn "Exit"
 		echo -e "0 ->exit"
+		info "Your InPut"
+
 		read choice
 		case $choice in
 			"0")
 			exit 0
 			;;
+			"10")
+			basicTools "1"
+			basicTools "2"
+			;;
 			"11")
-			aptInstall "zsh"
-				if [ $? -eq 0 ];then
-					wget -q  https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
-					# config for zsh
-					wget -q -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/f58d03c981b0c278ca8a4fe3bede84f2cfc9bf25/zshrc
-					chsh -s /bin/zsh
-				else
-					fail "zsh install failed"
-				fi
+			basicTools "1"
 			;;
 			"12")
-			aptInstall "tmux"
-			sudo pip -q install  powerline-status	
-			# config for tmux
-			wget -q -O ~/.tmux.conf https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/e426d859ba69901e4ac3d4a7adb9ab8c4896aaa9/tmux.conf
+			basicTools "2"
+			;;
+			"20")
+			terminalTools "1"
+			terminalTools "2"
+			terminalTools "3"
 			;;
 			"21")
-			aptInstall "python-pip"
+			terminalTools "1"
 			;;
 			"22")
-			info "Install ptpython"
-			sudo pip -q install ptpython
-			# config for ptpython
-			mkdir -p ~/.ptpython
-			wget -q -O ~/.ptpython/config.py https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/d2ae31bc68ebaf18078ca9bbd8f7c03f50b5c94b/config.py
+			terminalTools "2"
+			;;
+			"23")
+			terminalTools "3"
+			;;
+			"30")
+			developTools "1"
+			developTools "2"
+			developTools "3"
+			;;
+			"31")
+			developTools "1"
+			;;
+			"32")
+			developTools "2"
+			;;
+			"33")
+			developTools "3"
+			;;
+			*)
+			fail "InPut ERROR"
 			;;
 		esac
+		echo
+		echo
 	done
 }
 
