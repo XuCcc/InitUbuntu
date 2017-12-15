@@ -2,8 +2,6 @@
 
 stty erase ^h
 
-PWD=`pwd`
-
 # banner
 function welcome(){
 	echo -e "\033[36m
@@ -113,6 +111,7 @@ function terminalTools(){
 function developTools(){
 	if [ ${1} -eq 1 ];then
 		aptInstall "python-pip"
+		# TODO 源
 	elif [ ${1} -eq 2 ];then
 		info "Install ptpython"
 		sudo pip -q install ptpython
@@ -121,6 +120,7 @@ function developTools(){
 		wget -q -O ~/.ptpython/config.py https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/d2ae31bc68ebaf18078ca9bbd8f7c03f50b5c94b/config.py
 	elif [ ${1} -eq 3 ];then
 		aptInstall "ruby-full"
+		# TODO 
 	fi
 }
 
@@ -128,7 +128,8 @@ function dailyTools(){
 	if [ ${1} -eq 1 ];then
 		aptInstall "screenfetch"
 	elif [ ${1} -eq 2 ];then
-		echo
+		info "Install shadowsocks"
+		sudo pip install shadowsocks
 	elif [ ${1} -eq 3 ];then
 		echo
 	fi
@@ -160,7 +161,6 @@ configEnv(){
 	aptInstall "ruby-full"
 	if [ $? -eq 0 ];then
 		echo
-		# gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/
 	else
 		fail "Install Ruby failed"
 	fi
@@ -339,6 +339,8 @@ function installMain(){
 		info "Develop Tools"
 		echo -e "31->ipython\t 32->ptpython\t 33->ruby"
 		echo -e "30->All Develop Tools"
+		info "Daily Tools"
+		echo -e "41->screenfetch\t 42->shadowsocks"
 		warn "Exit"
 		echo -e "0 ->exit"
 		info "Your InPut"
@@ -385,6 +387,12 @@ function installMain(){
 			;;
 			"33")
 			developTools "3"
+			;;
+			"41")
+			dailyTools "1"
+			;;
+			"42")
+			dailyTools "2"
 			;;
 			*)
 			fail "InPut ERROR"
