@@ -32,6 +32,9 @@ function success(){
 	echo -e "\033[32m[+]\033[0m" ${1}
 }
 
+function waiting(){
+  echo -e -n "\033[5m[.]\033[5m" ${1}
+}
 
 
 function aptInstall(){
@@ -131,6 +134,13 @@ function developTools(){
 	    sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
         tmpUpdate
         aptInstall "docker-ce"
+        if [ $? -eq 0 ];then
+            sudo gpasswd -a ${USER} docker
+        else
+            fail "Install docker failed"
+        fi
+    elif [ ${1} -eq 5 ];then
+      aptInstall "default-jdk"
 	fi
 }
 
@@ -188,12 +198,6 @@ configEnv(){
 	rm -rf node-v6.10.1-linux-x64
 
 	aptInstall "docker-ce"
-	if [ $? -eq 0 ];then
-		# echo -e "{\n\t\"registry-mirrors\": [\"https://docker.mirrors.ustc.edu.cn\"]\n}\n" >> /etc/docker/daemon.json
-		sudo gpasswd -a ${USER} docker
-	else
-		fail "Install docker failed"
-	fi
 }
 
 systemSet(){
@@ -312,7 +316,7 @@ desktopTools(){
 function installMain(){
 	clear
     # Check GFW
-    info "Find Address..Waiting"
+    info  "Find Address..Waiting"
     msg=`curl  http://ipinfo.io/ -s`
     if echo $msg|grep -Eqi "China";then
         $INCHINA=1 
@@ -332,7 +336,7 @@ function installMain(){
 		echo -e "21->oh-my-zsh\t 22->tmux\t 23->powerline\t 24->SpaceVim"
 		echo -e "20->All Terminal Tools"
 		info "Develop Tools"
-		echo -e "31->ipython\t 32->ptpython\t 33->ruby\t 34->Docker"
+		echo -e "31->ipython\t 32->ptpython\t 33->ruby\t 34->Docker\t 35->JDK"
 		echo -e "30->All Develop Tools"
 		info "Daily Tools"
 		echo -e "41->screenfetch\t 42->shadowsocks"
@@ -361,7 +365,7 @@ function installMain(){
 			terminalTools "1"
 			terminalTools "2"
 			terminalTools "3"
-           		terminalTools "4"
+            terminalTools "4"
 			;;
 			"21")
 			terminalTools "1"
@@ -380,6 +384,7 @@ function installMain(){
 			developTools "2"
 			developTools "3"
             developTools "4"
+            developTools "5"
 			;;
 			"31")
 			developTools "1"
@@ -393,16 +398,18 @@ function installMain(){
             "34")
             developTools "4"
             ;;
-            "41")
+            "35")
+            developTools "5"
+            ;;
+            "40")
+            dailyTools "1"
+            dailyTools "2"
+            ;;"41")
 			dailyTools "1"
 			;;
 			"42")
 			dailyTools "2"
 			;;
-            "40")
-            dailyTools "1"
-            dailyTools "1"
-            ;;
 			*)
 			fail "InPut ERROR"
 			;;
@@ -411,6 +418,5 @@ function installMain(){
 		echo
 	done
 }
-
 installMain
 
