@@ -140,7 +140,10 @@ function developTools(){
             fail "Install docker failed"
         fi
     elif [ ${1} -eq 5 ];then
-      aptInstall "default-jdk"
+        aptInstall "default-jdk"
+    elif [ ${1} -eq 6 ];then
+        curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
+        aptInstall "nodejs"
 	fi
 }
 
@@ -336,7 +339,7 @@ function installMain(){
 		echo -e "21->oh-my-zsh\t 22->tmux\t 23->powerline\t 24->SpaceVim"
 		echo -e "20->All Terminal Tools"
 		info "Develop Tools"
-		echo -e "31->ipython\t 32->ptpython\t 33->ruby\t 34->Docker\t 35->JDK"
+		echo -e "31->ipython\t 32->ptpython\t 33->ruby\t 34->Docker\t 35->JDK\t 36->NodeJs"
 		echo -e "30->All Develop Tools"
 		info "Daily Tools"
 		echo -e "41->screenfetch\t 42->shadowsocks"
@@ -385,6 +388,7 @@ function installMain(){
 			developTools "3"
             developTools "4"
             developTools "5"
+            developTools "6"
 			;;
 			"31")
 			developTools "1"
@@ -401,10 +405,14 @@ function installMain(){
             "35")
             developTools "5"
             ;;
+            "36")
+            developTools "6"
+            ;;
             "40")
             dailyTools "1"
             dailyTools "2"
-            ;;"41")
+            ;;
+            "41")
 			dailyTools "1"
 			;;
 			"42")
