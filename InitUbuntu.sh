@@ -106,8 +106,8 @@ function terminalTools(){
 		info "Install powerline-status"
 		sudo pip -q install powerline-status
 	elif [ ${1} -eq 4 ];then
-		echo
-		# vim
+      info "Install SpaceVim"
+      curl -sLf https://spacevim.org/install.sh | bash
 	fi
 }
 
@@ -124,6 +124,13 @@ function developTools(){
 	elif [ ${1} -eq 3 ];then
 		aptInstall "ruby-full"
 		# TODO 
+    elif [ ${1} -eq 4 ];then
+        sudo apt-get remove -y docker docker-engine docker.io
+        sudo apt-get install -y  apt-transport-https ca-certificates  software-properties-common
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	    sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        tmpUpdate
+        aptInstall "docker-ce"
 	fi
 }
 
@@ -186,30 +193,6 @@ configEnv(){
 		sudo gpasswd -a ${USER} docker
 	else
 		fail "Install docker failed"
-	fi
-}
-
-commonTools(){
-	aptInstall "vim"
-	aptInstall "vim-nox"
-	aptInstall "ctags"
-	info "Install spf13-vim"
-	curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
-	echo "let g:airline_powerline_fonts=1" > ~/.vimrc.before.local	# airline
-
-	aptInstall "tmux"
-	sudo pip install  powerline-status
-	wget -O ~/.tmux.conf https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/e426d859ba69901e4ac3d4a7adb9ab8c4896aaa9/tmux.conf
-
-	aptInstall "screenfetch"
-	aptInstall "ipython"
-	aptInstall "zsh"
-	if [ $? -eq 0 ];then
-		wget -q  https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
-		wget -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/f58d03c981b0c278ca8a4fe3bede84f2cfc9bf25/zshrc
-		chsh -s /bin/zsh
-	else
-		fail "zsh install failed"
 	fi
 }
 
@@ -328,8 +311,17 @@ desktopTools(){
 # Insttall Menu
 function installMain(){
 	clear
-	welcome
-	while true
+    # Check GFW
+    info "Find Address..Waiting"
+    msg=`curl  http://ipinfo.io/ -s`
+    if echo $msg|grep -Eqi "China";then
+        $INCHINA=1 
+        warn "In China"
+    else
+        success "Not In China"
+    fi
+    welcome
+    while true
 	do
 		info "Please choose the application:"
 
@@ -337,10 +329,10 @@ function installMain(){
 		echo -e "11->curl\t\t 12->git"
 		echo -e "10->All Basic Tools"
 		info "Terminal Tools"
-		echo -e "21->oh-my-zsh\t 22->tmux\t 23->powerline"
+		echo -e "21->oh-my-zsh\t 22->tmux\t 23->powerline\t 24->SpaceVim"
 		echo -e "20->All Terminal Tools"
 		info "Develop Tools"
-		echo -e "31->ipython\t 32->ptpython\t 33->ruby"
+		echo -e "31->ipython\t 32->ptpython\t 33->ruby\t 34->Docker"
 		echo -e "30->All Develop Tools"
 		info "Daily Tools"
 		echo -e "41->screenfetch\t 42->shadowsocks"
@@ -348,17 +340,8 @@ function installMain(){
 		warn "Exit"
 		echo -e "0 ->exit"
 
-        # Check GFW
-        echo
-        info "Find Address..Waiting"
-        msg=`curl  http://ipinfo.io/ -s`
-        if echo $msg|grep -Eqi "China";then
-          $INCHINA=1 
-          warn "In China"
-        fi
-        echo
-
 		info "Your InPut"
+        echo -n "==> "
 		read choice
 		case $choice in
 			"0")
@@ -378,6 +361,7 @@ function installMain(){
 			terminalTools "1"
 			terminalTools "2"
 			terminalTools "3"
+           		terminalTools "4"
 			;;
 			"21")
 			terminalTools "1"
@@ -388,10 +372,14 @@ function installMain(){
 			"23")
 			terminalTools "3"
 			;;
+            "24")
+            terminalTools "4"
+            ;;
 			"30")
 			developTools "1"
 			developTools "2"
 			developTools "3"
+            developTools "4"
 			;;
 			"31")
 			developTools "1"
@@ -402,7 +390,10 @@ function installMain(){
 			"33")
 			developTools "3"
 			;;
-			"41")
+            "34")
+            developTools "4"
+            ;;
+            "41")
 			dailyTools "1"
 			;;
 			"42")
@@ -418,85 +409,6 @@ function installMain(){
 		esac
 		echo
 		echo
-	done
-}
-
-main(){
-	clear
-	info "Initialize Ubuntu"
-	info "Chose one of the following"
-	while true
-	do
-		echo
-		info "Ubuntu Serve"
-		echo
-		echo "1. Update source to USTC"
-		echo "2. Update system and install: curl,git,expect"
-		echo "3. Config environment: pip,java,ruby,nodejs,docker"
-		echo "4. Instal tools: vim,zsh,tmux,ipython"
-		echo "5. Auto Complete Step: 2-4"
-		echo
-		info "Ubuntu Desktop"
-		echo
-		echo "6. System Clean"
-		echo "7. Tools"
-		echo
-		fail "b. Exit"
-		echo
-        
-        info "Find Address"
-        if [ $INCHINA -eq 1 ];then
-          info "CHINA"
-        fi
-		info "Please input:"
-
-
-		read choice
-		case "$choice" in
-			"1")
-			updateSource
-			clear
-			info "Update Source Done"
-			;;
-			"2")
-			updateSystem
-			basicInstall
-			clear
-			info "Update System and Basicial install Done"
-			;;
-			"3")
-			configEnv
-			clear
-			info "Config Environment Done"
-			;;
-			"4")
-			commonTools
-			clear
-			info "Install Tools Done"
-			;;
-			"5")
-			updateSystem
-			basicInstall
-			configEnv
-			commonTools
-			;;
-			"6")
-			systemSet
-			systemClean
-			clear
-			info "Done"
-			;;
-			"7")
-			desktopTools
-			;;
-			"b")
-			exit 0
-			;;
-			*)
-			clear
-			fail "Input ERROR"
-			;;
-		esac
 	done
 }
 
