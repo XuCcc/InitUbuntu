@@ -109,8 +109,10 @@ function terminalTools(){
 		info "Install powerline-status"
 		sudo pip -q install powerline-status
 	elif [ ${1} -eq 4 ];then
-      info "Install SpaceVim"
-      curl -sLf https://spacevim.org/install.sh | bash
+		aptInstall "ttf-mscorefonts-installer"
+		aptInstall "fontconfig"
+		info "Install SpaceVim"
+		curl -sLf https://spacevim.org/install.sh | bash
 	fi
 }
 
