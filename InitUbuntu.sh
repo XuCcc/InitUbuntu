@@ -2,6 +2,8 @@
 
 stty erase ^h
 
+INCHINA=0 
+
 # banner
 function welcome(){
 	echo -e "\033[36m
@@ -29,6 +31,7 @@ function fail(){
 function success(){
 	echo -e "\033[32m[+]\033[0m" ${1}
 }
+
 
 
 function aptInstall(){
@@ -341,10 +344,21 @@ function installMain(){
 		echo -e "30->All Develop Tools"
 		info "Daily Tools"
 		echo -e "41->screenfetch\t 42->shadowsocks"
+        echo -e "40->All Daily Tools"
 		warn "Exit"
 		echo -e "0 ->exit"
-		info "Your InPut"
 
+        # Check GFW
+        echo
+        info "Find Address..Waiting"
+        msg=`curl  http://ipinfo.io/ -s`
+        if echo $msg|grep -Eqi "China";then
+          $INCHINA=1 
+          warn "In China"
+        fi
+        echo
+
+		info "Your InPut"
 		read choice
 		case $choice in
 			"0")
@@ -394,6 +408,10 @@ function installMain(){
 			"42")
 			dailyTools "2"
 			;;
+            "40")
+            dailyTools "1"
+            dailyTools "1"
+            ;;
 			*)
 			fail "InPut ERROR"
 			;;
@@ -425,6 +443,11 @@ main(){
 		echo
 		fail "b. Exit"
 		echo
+        
+        info "Find Address"
+        if [ $INCHINA -eq 1 ];then
+          info "CHINA"
+        fi
 		info "Please input:"
 
 
@@ -478,5 +501,4 @@ main(){
 }
 
 installMain
-
 
