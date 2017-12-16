@@ -115,6 +115,13 @@ function terminalTools(){
 }
 
 function developTools(){
+
+# info "Set pip source to https://pypi.tuna.tsinghua.edu.cn/simple"
+	# printf "[global]\nindex-url = https://pypi.tuna.tsinghua.edu.cn/simple\n" >> .pip/pip.conf
+	# info "Set npm registry to https://registry.npm.taobao.org"
+	# npm config set registry https://registry.npm.taobao.org
+
+
 	if [ ${1} -eq 1 ];then
 		aptInstall "python-pip"
 		# TODO 源
@@ -157,53 +164,7 @@ function dailyTools(){
 		echo
 	fi
 }
-
-configEnv(){
-	sudo add-apt-repository -y ppa:webupd8team/java
-
-	curl -fsSL https://download.docker.com/linux/ubuntu/gpg |  sudo apt-key add -
-	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-
-	tmpUpdate
-
-	aptInstall "python-pip"
-	mkdir -p  ~/.pip
-	# info "Set pip source to https://pypi.tuna.tsinghua.edu.cn/simple"
-	# printf "[global]\nindex-url = https://pypi.tuna.tsinghua.edu.cn/simple\n" >> .pip/pip.conf
-	sudo pip install --upgrade pip
-
-	aptInstall "default-jre"
-	aptInstall "default-jdk"
-	aptInstall "oracle-java8-installer"
-	if [ $? -eq 0 ];then
-		sudo update-alternatives --config java
-	else
-		fail "Install java failed"
-	fi
-
-	aptInstall "ruby-full"
-	if [ $? -eq 0 ];then
-		echo
-	else
-		fail "Install Ruby failed"
-	fi
-
-	info "Install node.js v6.10.1"
-	wget -q  -O node-v6.10.1.tar.xz https://npm.taobao.org/mirrors/node/v6.10.1/node-v6.10.1-linux-x64.tar.xz
-	tar -xJf node-v6.10.1.tar.xz
-	sudo mv node-v6.10.1-linux-x64/  /opt/
-	sudo ln -s /opt/node-v6.10.1-linux-x64/bin/node  /usr/local/bin/
-	sudo ln -s /opt/node-v6.10.1-linux-x64/bin/npm /usr/local/bin/
-	sudo ln -s /opt/node-v6.10.1-linux-x64/lib/node_modules/npm/bin/node-gyp-bin/node-gyp /usr/local/bin/
-	# info "Set npm registry to https://registry.npm.taobao.org"
-	# npm config set registry https://registry.npm.taobao.org
-	rm node-v6.10.1.tar.xz
-	rm -rf node-v6.10.1-linux-x64
-
-	aptInstall "docker-ce"
-}
-
-systemSet(){
+	systemSet(){
 	info "Turn off warning"
 	sudo sed -i 's/enabled=1/enabled=0/g' /etc/default/apport
 
