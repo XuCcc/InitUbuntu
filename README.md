@@ -29,7 +29,7 @@ TODO
 - vim
 	- [SpaceVim](http://spacevim.org) 
 
-![vim](./images/vim.png)
+![vim](.images/vim.png)
 
 ## Result
 
