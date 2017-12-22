@@ -121,6 +121,10 @@ function terminalTools(){
         aptInstall "vim-nox"
         aptInstall "vim-nox-py2"
         curl -sLf https://gist.githubusercontent.com/XuCcc/2d8b95308fae5e62d3435636d5263d31/raw/5110954c7b4e2fc12a89bf5ddb9e8733c156b30a/install.sh | bash
+    elif [ ${1} -eq 5 ]; then
+        sudo add-apt-repository ppa:george-edison55/cmake-3.x -y
+        updateSystem
+        aptInstall "cmake"
     fi
 }
 
@@ -307,12 +311,14 @@ function installMain(){
     do
         info "Please choose the application:"
 
+        info "System Settings"
+        echo -e "1 ->Change Sources.list\t 2->Update System\t 3->Upgrade System"
         info "Basic Tools"
         echo -e "1 ->Change Sources.list\t 2->Update System\t 3->Upgrade System"
         echo -e "11->curl\t\t 12->git"
         echo -e "10->All Basic Tools"
         info "Terminal Tools"
-        echo -e "21->oh-my-zsh\t 22->tmux\t 23->powerline\t 24->SpaceVim"
+        echo -e "21->oh-my-zsh\t 22->tmux\t 23->powerline\t 24->SpaceVim\t 25->cmake"
         echo -e "20->All Terminal Tools"
         info "Develop Tools"
         echo -e "31->ipython\t 32->ptpython\t 33->ruby\t 34->Docker\t 35->JDK\t 36->NodeJs"
@@ -358,6 +364,7 @@ function installMain(){
             terminalTools "2"
             terminalTools "3"
             terminalTools "4"
+            terminalTools "5"
             ;;
             "21")
             terminalTools "1"
@@ -370,6 +377,9 @@ function installMain(){
             ;;
             "24")
             terminalTools "4"
+            ;;
+            "25")
+            terminalTools "5"
             ;;
             "30")
             developTools "1"
@@ -408,6 +418,34 @@ function installMain(){
             dailyTools "2"
             ;;
             "101")
+            changeSource
+            updateSystem
+            upgradeSystem
+            basicTools "1"
+            basicTools "2"
+            basicTools "1"
+            basicTools "2"
+            terminalTools "1"
+            terminalTools "2"
+            terminalTools "3"
+            terminalTools "4"
+            terminalTools "5"
+            developTools "1"
+            developTools "2"
+            developTools "3"
+            developTools "4"
+            developTools "5"
+            developTools "6"
+            developTools "1"
+            developTools "2"
+            developTools "3"
+            developTools "4"
+            developTools "5"
+            developTools "6"
+            dailyTools "1"
+            dailyTools "2"
+            dailyTools "1"
+            dailyTools "2"
             ;;
             *)
             fail "InPut ERROR"
