@@ -432,7 +432,7 @@ function installMain(){
             dailyTools "4"
             ;;
             "101")
-            changeSource
+            # changeSource
             updateSystem
             upgradeSystem
             basicTools "1"
