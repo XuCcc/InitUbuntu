@@ -98,7 +98,7 @@ function terminalTools(){
             sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
             git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
             # config for zsh
-            wget -q -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/9859c4721ccc4949c8583d3202fc6483/raw/175372d02cd383ea03ea9d9e523dca4c69493204/zshrc
+            wget -q -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/9859c4721ccc4949c8583d3202fc6483/raw/dbb84320118c36bd3e628645736a87f7f1133a43/zshrc
             chsh -s /bin/zsh
         else
             fail "zsh install failed"
@@ -106,7 +106,7 @@ function terminalTools(){
     elif [ ${1} -eq 2 ];then
         aptInstall "tmux"
         # config for tmux
-        wget -q -O ~/.tmux.conf https://gist.githubusercontent.com/XuCcc/5e6b50e0d07f7c82b8f880e2ad59b6a9/raw/ac1a8cae6715d0a3516645f43eb122428ada2e89/tmux.conf
+        wget -q -O ~/.tmux.conf https://gist.githubusercontent.com/XuCcc/5e6b50e0d07f7c82b8f880e2ad59b6a9/raw/250fd957fd7bf57b0dbaacda8fabad6f7fc5a53b/tmux.conf
     elif [ ${1} -eq 3 ];then
         info "Install powerline-status"
         sudo pip -q install powerline-status
@@ -121,6 +121,7 @@ function terminalTools(){
         aptInstall "vim-nox"
         aptInstall "vim-nox-py2"
         curl -sLf https://gist.githubusercontent.com/XuCcc/2d8b95308fae5e62d3435636d5263d31/raw/5110954c7b4e2fc12a89bf5ddb9e8733c156b30a/install.sh | bash
+        wget -q -O ~/.SpaceVim.d/init.vim https://gist.githubusercontent.com/XuCcc/2d8b95308fae5e62d3435636d5263d31/raw/ee6dc07254e5b430bda43c377cff198f15c61585/init.vim 
     elif [ ${1} -eq 5 ]; then
         sudo add-apt-repository ppa:george-edison55/cmake-3.x -y
         updateSystem
@@ -161,7 +162,7 @@ function developTools(){
     elif [ ${1} -eq 5 ];then
         aptInstall "default-jdk"
     elif [ ${1} -eq 6 ];then
-        curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
+        curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash - > /dev/null
         aptInstall "nodejs"
     elif [ ${1} -eq 7 ]; then
         sudo tasksel install lamp-server
@@ -325,7 +326,7 @@ function installMain(){
         echo -e "20->All Terminal Tools"
 
         info "Develop Tools"
-        echo -e "31->ipython\t 32->ptpython\t 33->ruby\t 34->Docker\t 35->JDK\t 36->NodeJs"
+        echo -e "31->ipython\t 32->ptpython\t 33->ruby\t 34->Docker\t 35->JDK\t 36->NodeJs\t 37->Lamp"
         echo -e "30->All Develop Tools"
 
         info "Daily Terminalools"
@@ -394,6 +395,7 @@ function installMain(){
             developTools "4"
             developTools "5"
             developTools "6"
+            developTools "7"
             ;;
             "31")
             developTools "1"
@@ -412,6 +414,9 @@ function installMain(){
             ;;
             "36")
             developTools "6"
+            ;;
+            "37")
+            developTools "7"
             ;;
             "40")
             dailyTools "1"
@@ -456,6 +461,7 @@ function installMain(){
             developTools "4"
             developTools "5"
             developTools "6"
+            developTools "7"
             dailyTools "1"
             dailyTools "2"
             dailyTools "1"
