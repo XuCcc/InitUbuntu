@@ -93,10 +93,10 @@ function basicTools(){
 function terminalTools(){
     if [ ${1} -eq 1 ];then
         aptInstall "zsh"
-        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
         aptInstall "autojump"
         if [ $? -eq 0 ];then
-            wget -q  https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
+            sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+            git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
             # config for zsh
             wget -q -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/9859c4721ccc4949c8583d3202fc6483/raw/175372d02cd383ea03ea9d9e523dca4c69493204/zshrc
             chsh -s /bin/zsh
@@ -114,7 +114,7 @@ function terminalTools(){
         # aptInstall "ttf-mscorefonts-installer"
         # aptInstall "fontconfig"
         info "Install SpaceVim"
-        sudo add-apt-repository -y  ppa:jonathonf/varim
+        sudo add-apt-repository -y  ppa:jonathonf/vim
         updateSystem
         aptInstall "vim"
         aptInstall "ctags"
@@ -178,6 +178,8 @@ function dailyTools(){
         sudo add-apt-repository -y ppa:webupd8team/sublime-text-3
         updateSystem 
         aptInstall "sublime-text"
+    elif [ ${1} -eq 4 ]; then
+        aptInstall "proxychains"
     fi
 }
 systemSet(){
@@ -313,19 +315,23 @@ function installMain(){
 
         info "System Settings"
         echo -e "1 ->Change Sources.list\t 2->Update System\t 3->Upgrade System"
+
         info "Basic Tools"
-        echo -e "1 ->Change Sources.list\t 2->Update System\t 3->Upgrade System"
         echo -e "11->curl\t\t 12->git"
         echo -e "10->All Basic Tools"
+        
         info "Terminal Tools"
         echo -e "21->oh-my-zsh\t 22->tmux\t 23->powerline\t 24->SpaceVim\t 25->cmake"
         echo -e "20->All Terminal Tools"
+
         info "Develop Tools"
         echo -e "31->ipython\t 32->ptpython\t 33->ruby\t 34->Docker\t 35->JDK\t 36->NodeJs"
         echo -e "30->All Develop Tools"
+
         info "Daily Terminalools"
-        echo -e "41->screenfetch\t 42->shadowsocks\t 43->sublime-text"
+        echo -e "41->screenfetch\t 42->shadowsocks\t 43->sublime-text\t 44->proxychains"
         echo -e "40->All Daily Tools"
+
         info "GUI Beauty"
         echo -e "51->unity-tweak-tool\t 52->noobslab\t 53->docky"
 
@@ -410,12 +416,20 @@ function installMain(){
             "40")
             dailyTools "1"
             dailyTools "2"
+            dailyTools "3"
+            dailyTools "4"
             ;;
             "41")
             dailyTools "1"
             ;;
             "42")
             dailyTools "2"
+            ;;
+            "43")
+            dailyTools "3"
+            ;;
+            "44")
+            dailyTools "4"
             ;;
             "101")
             changeSource
