@@ -336,8 +336,10 @@ function installMain(){
 
         info "GUI Beauty"
         echo -e "51->unity-tweak-tool\t 52->noobslab\t 53->docky"
-
-        info "Auto Init Ubuntu Server -> 101"
+        echo
+        info "Amazing Terminal -> 101"
+        info "Auto Init Ubuntu Server -> 102"
+        echo
         warn "Exit"
         echo -e "0 ->exit"
 
@@ -438,24 +440,25 @@ function installMain(){
             dailyTools "4"
             ;;
             "101")
+            terminalTools "1"
+            terminalTools "2"
+            ;;
+            "102")
             # changeSource
             updateSystem
             upgradeSystem
+            # basicTools
             basicTools "1"
             basicTools "2"
             basicTools "1"
             basicTools "2"
+            # terminalTools
             terminalTools "1"
             terminalTools "2"
             terminalTools "3"
             terminalTools "4"
             terminalTools "5"
-            developTools "1"
-            developTools "2"
-            developTools "3"
-            developTools "4"
-            developTools "5"
-            developTools "6"
+            # developTools
             developTools "1"
             developTools "2"
             developTools "3"
@@ -463,8 +466,7 @@ function installMain(){
             developTools "5"
             developTools "6"
             developTools "7"
-            dailyTools "1"
-            dailyTools "2"
+            # dailyTools
             dailyTools "1"
             dailyTools "2"
             ;;
