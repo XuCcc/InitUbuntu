@@ -138,8 +138,8 @@ function developTools(){
 
 
     if [ ${1} -eq 1 ];then
-        aptInstall "python-pip"
-        # TODO 源
+        aptInstall "python-dev python-pip python3-dev python3-pip"
+        # pip config
     elif [ ${1} -eq 2 ];then
         info "Install ptpython"
         sudo pip -q install ptpython
@@ -148,7 +148,7 @@ function developTools(){
         wget -q -O ~/.ptpython/config.py https://gist.githubusercontent.com/XuCcc/2f3d5d05a39f10b871aa10095318ca22/raw/d2ae31bc68ebaf18078ca9bbd8f7c03f50b5c94b/config.py
     elif [ ${1} -eq 3 ];then
         aptInstall "ruby-full"
-        # TODO 
+        # ruby config
     elif [ ${1} -eq 4 ];then
         sudo apt-get remove -y docker docker-engine docker.io
         sudo apt-get install -y  apt-transport-https ca-certificates  software-properties-common
@@ -158,6 +158,7 @@ function developTools(){
         aptInstall "docker-ce"
         if [ $? -eq 0 ];then
             sudo gpasswd -a ${USER} docker 
+            # docker.json
         fi
     elif [ ${1} -eq 5 ];then
         aptInstall "default-jdk"
@@ -326,7 +327,7 @@ function installMain(){
         echo -e "20->All Terminal Tools"
 
         info "Develop Tools"
-        echo -e "31->ipython\t 32->ptpython\t 33->ruby\t 34->Docker\t 35->JDK\t 36->NodeJs\t 37->Lamp"
+        echo -e "31->pip2 pip3\t 32->ptpython\t 33->ruby\t 34->Docker\t 35->JDK\t 36->NodeJs\t 37->Lamp"
         echo -e "30->All Develop Tools"
 
         info "Daily Terminalools"
@@ -475,5 +476,8 @@ function installMain(){
         echo
     done
 }
+
 installMain
+
+
 
