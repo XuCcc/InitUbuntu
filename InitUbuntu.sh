@@ -73,6 +73,14 @@ function changeSource(){
     sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
     sudo sed -i 's/[a-zA-Z]*.archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
     # sudo sed -i 's/[a-zA-Z]*.archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+    info "Change pip source to Tuna"
+    printf "[global]\nindex-url = https://pypi.tuna.tsinghua.edu.cn/simple\n" >> .pip/pip.conf
+
+    info "Change npm source to taobao"
+    npm config set registry https://registry.npm.taobao.org
+
+    info "Change docker source to USTC"
+    sudo echo -e "{\n\"registry-mirrors\": [\"https://docker.mirrors.ustc.edu.cn\"]\n}" > /etc/docker/daemon.json
 }
 
 function upgradeSystem(){
