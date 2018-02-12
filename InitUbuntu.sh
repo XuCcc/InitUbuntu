@@ -101,16 +101,12 @@ function basicTools(){
 function terminalTools(){
     if [ ${1} -eq 1 ];then
         aptInstall "zsh"
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+        # config for zsh
+        wget -q -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/9859c4721ccc4949c8583d3202fc6483/raw/dbb84320118c36bd3e628645736a87f7f1133a43/zshrc
+        chsh -s /bin/zsh
         aptInstall "autojump"
-        if [ $? -eq 0 ];then
-            sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-            git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-            # config for zsh
-            wget -q -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/9859c4721ccc4949c8583d3202fc6483/raw/dbb84320118c36bd3e628645736a87f7f1133a43/zshrc
-            chsh -s /bin/zsh
-        else
-            fail "zsh install failed"
-        fi
     elif [ ${1} -eq 2 ];then
         aptInstall "tmux"
         # config for tmux
