@@ -105,7 +105,7 @@ function terminalTools(){
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
         # config for zsh
         wget -q -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/9859c4721ccc4949c8583d3202fc6483/raw/dbb84320118c36bd3e628645736a87f7f1133a43/zshrc
-        chsh -s /bin/zsh
+        # chsh -s /bin/zsh
         aptInstall "autojump"
     elif [ ${1} -eq 2 ];then
         aptInstall "tmux"
@@ -306,15 +306,15 @@ desktopTools(){
 function installMain(){
     clear
     # Check GFW
-    info  "Find Address..Waiting"
-    msg=`curl  http://ipinfo.io/ -s`
-    if echo $msg|grep -Eqi "China" ;then
-        $INCHINA=1 
-        warn "In China"
-    else
-        success "Not In China"
-    fi
-    welcome
+    # info  "Find Address..Waiting"
+    # msg=`curl  http://ipinfo.io/ -s`
+    # if echo $msg|grep -Eqi "China" ;then
+        # $INCHINA=1
+        # warn "In China"
+    # else
+        # success "Not In China"
+    # fi
+    # welcome
     while true
     do
         info "Please choose the application:"
