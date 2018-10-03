@@ -20,12 +20,11 @@ SYSTEM="$(uname -s)"
 
 function welcome(){
     echo -e "\033[36m
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    ____     _ __          __  ____             __
   /  _/__  (_) /_        / / / / /  __ _____  / /___ __
  _/ // _ \/ / __/       / /_/ / _ \/ // / _ \/ __/ // /
 /___/_//_/_/\__/        \____/_.__/\_,_/_//_/\__/\_,_/
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 \033[0m"
 }
 
@@ -116,6 +115,17 @@ pythonDevelopEnv(){
 }
 
 
+javaDevelopEnv(){
+	case ${1} in
+		1)
+			info "Oracle JDK"
+			sudo add-apt-repository -y ppa:webupd8team/java
+			sudo apt update > /dev/null
+			sudo apt install -y oracle-java8-set-default
+			;;
+	esac
+}
+
 dockerDevelopEnv(){
 	case ${1} in
 		1)
@@ -152,3 +162,7 @@ zshDevelopEnv(){
 			;;
 	esac
 }
+
+
+
+welcome
