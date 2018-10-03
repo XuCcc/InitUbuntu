@@ -156,9 +156,9 @@ zshDevelopEnv(){
 			aptInstall "tmux"
 			;;
 		5)
-			info "Config zsh and tmux with Xu's style from https://gist.githubusercontent.com/XuCcc/"
-			wget -q -O ~/.zshrc https://gist.githubusercontent.com/XuCcc/9859c4721ccc4949c8583d3202fc6483/raw/dbb84320118c36bd3e628645736a87f7f1133a43/zshrc
-			wget -q -O ~/.tmux.conf https://gist.githubusercontent.com/XuCcc/5e6b50e0d07f7c82b8f880e2ad59b6a9/raw/250fd957fd7bf57b0dbaacda8fabad6f7fc5a53b/tmux.conf
+			info "Config zsh and tmux"
+			cp config/zsh ~/.zshrc
+			cp config/tmux ~/.tmux.conf
 			;;
 	esac
 }
