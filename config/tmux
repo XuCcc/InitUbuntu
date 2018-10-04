@@ -45,22 +45,26 @@ unbind z
 bind Space resize-pane -Z
 
 # statusbar
+
 set -g status-justify left
 set -g status-bg colour235
 set -g status-fg colour248
 set -g status-attr dim
  
-set -g status-left '#[fg=colour235,bg=#ffc000,bold] ❐ #S #[fg=#ffc000,bg=#990000,nobold]⮀#[fg=#d7bdbd,bg=#990000,bold] #(whoami) #[fg=#990000,bg=colour241]⮀ #[fg=colour235,bg=colour241,bold] #(hostname -s) #[fg=colour241,bg=colour235,nobold]⮀'
+set -g status-left '#[fg=colour235,bg=#ffc000,bold] ❐ #S #[fg=#ffc000,bg=#990000,nobold]#[fg=#d7bdbd,bg=#990000,bold] #(whoami) #[fg=#990000,bg=colour241] #[fg=colour235,bg=colour241,bold] #(hostname -s) #[fg=colour241,bg=colour235,nobold]'
 set -g status-left-attr bright
 set -g status-left-length 80
 
-set -g status-right '#[fg=colour241,bg=colour235]⮂#[fg=colour233,bg=colour241,bold] %H:%M #[fg=#0f38ad,bg=colour241]⮂#[fg=colour233,bg=#0f68ad,bold] %-d %b '
+set -g status-right '#[fg=colour241,bg=colour235]#[fg=colour233,bg=colour241,bold] %H:%M #[fg=#0f38ad,bg=colour241]#[fg=colour233,bg=#0f68ad,bold] %-d %b '
 set -g status-right-attr bright
 set -g status-right-length 80
 
-set -g window-status-format "#[fg=colour235,bg=colour234]⮀ #[fg=white,bg=colour234]#I ⮁ #W #[fg=colour234,bg=colour235]⮀"
-set -g window-status-current-format "#[fg=colour235,bg=colour120]⮀#[fg=colour25,bg=colour120,noreverse,bold] #I ⮁ #W #[fg=colour120,bg=colour235,nobold]⮀"
+set -g window-status-format "#[fg=colour235,bg=colour234] #[fg=white,bg=colour234]#I  #W #[fg=colour234,bg=colour235]"
+set -g window-status-current-format "#[fg=colour235,bg=colour120]#[fg=colour25,bg=colour120,noreverse,bold] #I  #W #[fg=colour120,bg=colour235,nobold]"
 set -wg window-status-separator ""
+
+
+
 # statusbar end
 
 # Reload

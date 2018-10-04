@@ -91,12 +91,13 @@ changeSourceForChina(){
 basicToolsInstall(){
 	aptInstall "curl"
 	aptInstall "git"
+	aptInstall "vim"
 }
 
 pythonDevelopEnv(){
 	case ${1} in
 		1)
-			info "pip2 && pip3"
+			info "pip2&pip3"
 			aptInstall "python-dev python-pip python3-dev python3-pip"
 			;;
 		2)
@@ -122,6 +123,10 @@ javaDevelopEnv(){
 			sudo add-apt-repository -y ppa:webupd8team/java
 			sudo apt update > /dev/null
 			sudo apt install -y oracle-java8-set-default
+			;;
+		2)
+			info "maven: A software project management and comprehension tool"
+			aptInstall maven
 			;;
 	esac
 }
