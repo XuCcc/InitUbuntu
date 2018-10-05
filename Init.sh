@@ -17,6 +17,7 @@ White='\033[0;37m'        # White
 VERSION='0.2.0'
 # system
 SYSTEM="$(uname -s)"
+ISSUE=`cat /etc/issue`
 
 function welcome(){
     echo -e "\033[36m
@@ -25,6 +26,7 @@ function welcome(){
  _/ // _ \/ / __/       / /_/ / _ \/ // / _ \/ __/ // /
 /___/_//_/_/\__/        \____/_.__/\_,_/_//_/\__/\_,_/
 
+			Version: ${VERSION} 	by: Xu
 \033[0m"
 }
 
@@ -138,13 +140,13 @@ dockerDevelopEnv(){
 			curl https://get.docker.com/|bash
 			;;
 		2)
-			info "docker-compose"
+			info "docker-compose: a tool for defining and running multi-container Docker applications"
 			pip install docker-compose
 			;;
 	esac
 }
 
-zshDevelopEnv(){
+shellDevelopEnv(){
 	case ${1} in
 		1)
 			aptInstall "zsh"
@@ -169,5 +171,149 @@ zshDevelopEnv(){
 }
 
 
+help(){
+	echo "Usage: bash InitUbuntu.sh [type] [target] [options]"
+	echo
+	echo "TYPE and TARGET"
+	echo
+	echo "[update]"
+	echo "[source]"
+	echo "	apt:"
+	echo "	pip:"
+	echo "	docker:"
+	echo "[python]"
+	echo "	pip: pip2&pip3"
+	echo "	pyenv: Simple Python version management"
+	echo "	pipenv: Python Development Workflow for Humans"
+	echo "	ptpython: an advanced Python REPL"
+	echo "[java]"
+	echo "	jdk: Oracle JDK"
+	echo "	maven: A software project management and comprehension tool"
+	echo "[docker]"
+	echo "	docker-ce: "
+	echo "	docker-compose: A tool for defining and running multi-container Docker applications"
+	echo "[shell]"
+	echo "	zsh:"
+	echo "	zsh-syntax-highlighting: Fish shell like syntax highlighting for Zsh"
+	echo "	autojump: shell extension to jump to frequently used directories"
+	echo "	tmux: terminal multiplexer"
+	echo "	config: zsh&tmux config of Xu"
+	echo
+	echo "OPTIONS"
+	echo
+	echo " -b,--basic 	Basic Tools Install: curl,git,vim"
+	echo " -v,--Version 	Show version"
+	echo " -h,--help 	Show this help message and exit"
+	echo
+	echo "Example:"
+	echo
+	echo "	Update System"
+	echo "		bash InitUbuntu.sh update"
+	echo "	Install java maven"
+	echo "		bash InitUbuntu.sh java meven"
+	echo "	Install all shell tools"
+	echo "		bash InitUbuntu.sh shell"
+}
 
-welcome
+main(){
+	if [ $# -eq 0 ]
+	then
+		welcome
+		echo "Usage: bash InitUbuntu.sh [type] [target] [options]"
+		echo
+		echo "InitUbuntu.sh [--help|-h] [--version|-v] [--basic|-b]"
+		echo "	{update,source,python,java,docker,shell} [target]"
+		echo "System info: " ${ISSUE}
+	else
+		case $@ in
+			"update")
+				updateANDUpgradeSystem
+				;;
+			"source")
+				changeSourceForChina 1
+				changeSourceForChina 2
+				changeSourceForChina 3
+				;;
+			"source apt")
+				changeSourceForChina 1
+				;;
+			"source pip")
+				changeSourceForChina 2
+				;;
+			"source docker")
+				changeSourceForChina 3
+				;;
+			"python")
+				pythonDevelopEnv 1
+				pythonDevelopEnv 2
+				pythonDevelopEnv 3
+				pythonDevelopEnv 4
+				;;
+			"python pip")
+				pythonDevelopEnv 1
+				;;
+			"python pyenv")
+				pythonDevelopEnv 2
+				;;
+			"python pipenv")
+				pythonDevelopEnv 3
+				;;
+			"python ptpython")
+				pythonDevelopEnv 4
+				;;
+			"java")
+				javaDevelopEnv 1
+				javaDevelopEnv 2
+				;;
+			"java jdk")
+				javaDevelopEnv 1
+				;;
+			"java maven")
+				javaDevelopEnv 2
+				;;
+			"docker")
+				dockerDevelopEnv 1
+				dockerDevelopEnv 2
+				;;
+			"docker docker-ce")
+				dockerDevelopEnv 1
+				;;
+			"docker docker-compose")
+				dockerDevelopEnv 2
+				;;
+			"shell")
+				shellDevelopEnv 1
+				shellDevelopEnv 2
+				shellDevelopEnv 3
+				shellDevelopEnv 4
+				shellDevelopEnv 5
+				;;
+			"shell zsh")
+				shellDevelopEnv 1
+				;;
+			"shell zsh-syntax-highlighting")
+				shellDevelopEnv 2
+				;;
+			"shell autojump")
+				shellDevelopEnv 3
+				;;
+			"shell tmux")
+				shellDevelopEnv 4
+				;;
+			"shell config")
+				shellDevelopEnv 5
+				;;
+			--basic|-b)
+				basicToolsInstall
+				;;
+			--version|-v)
+				echo "Version: ${VERSION}"
+				;;
+			--help|-h)
+				help
+				;;
+		esac
+	fi
+}
+
+main $@	
