@@ -1,0 +1,6 @@
+[core]
+	editor = vim
+[merge]
+	tool = vimdiff
+[credential]
+	helper = store
