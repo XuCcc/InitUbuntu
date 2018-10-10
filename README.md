@@ -4,7 +4,7 @@
 [![Github release](https://img.shields.io/badge/release-0.1.0-green.svg)](https://github.com/XuCcc/InitUbuntu/releases/tag/0.1.0)
 [![platform](https://img.shields.io/badge/platform-ubuntu-lightgrey.svg)]()
 
-![](/home/xu/Projects/InitUbuntu/.images/show.png)
+![](.images/show.png)
 
 ## Tools
 
