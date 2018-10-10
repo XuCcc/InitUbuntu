@@ -187,9 +187,9 @@ help(){
 	echo
 	echo "[update]"
 	echo "[source]"
-	echo "	apt:"
-	echo "	pip:"
-	echo "	docker:"
+	echo "	apt:    http://mirrors.ustc.edu.cn/ubuntu/"
+	echo "	pip:    https://pypi.tuna.tsinghua.edu.cn/simple"
+	echo "	docker: https://docker.mirrors.ustc.edu.cn"
 	echo "[python]"
 	echo "	pip: pip2&pip3"
 	echo "	pyenv: Simple Python version management"
