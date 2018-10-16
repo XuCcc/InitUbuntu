@@ -91,7 +91,8 @@ changeSourceForChina(){
 	elif [ ${1} -eq 2 ];then
 		# python pip sources
 		info "[tsinghua] python pip ~/.pip/pip.conf"
-	    printf "[global]\nindex-url = https://pypi.tuna.tsinghua.edu.cn/simple\n" >> .pip/pip.conf
+		mkdir -p ~/.pip
+	    echo -e "[global]\nindex-url = https://pypi.tuna.tsinghua.edu.cn/simple" >> ~/.pip/pip.conf
 	elif [ ${1} -eq 3 ];then
 		# docker dameon.json
 		info "[USTC] docker /etc/docker/daemon.json"
@@ -114,10 +115,16 @@ pythonDevelopEnv(){
 		2)
 			info "pyenv: Simple Python version management"
 			curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+			echo '# pyenv' >> ~/.zshrc
+			echo 'export PATH="/home/xu/.pyenv/bin:$PATH"' >> ~/.zshrc
+			echo '"$(pyenv init -)"' >> ~/.zshrc
+			echo '"$(pyenv virtualenv-init -)"' >> ~/.zshrc
 			;;
 		3)
 			info "pipenv: Python Development Workflow for Humans"
-			curl https://raw.githubusercontent.com/kennethreitz/pipenv/master/get-pipenv.py | python
+			pip install --user pipenv
+			echo '# pipenv' >> ~/.zshrc
+			echo 'alias pipenv="$HOME/.local/bin/pipenv"' >> ~/.zshrc
 			;;
 		4)
 			info "ptpython: an advanced Python REPL"
