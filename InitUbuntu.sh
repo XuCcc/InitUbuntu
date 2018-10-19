@@ -114,6 +114,9 @@ pythonDevelopEnv(){
 			;;
 		2)
 			info "pyenv: Simple Python version management"
+			aptInstall "make build-essential libssl-dev zlib1g-dev libbz2-dev
+						libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev
+						xz-utils tk-dev libffi-dev liblzma-dev"
 			curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 			echo '# pyenv' >> ~/.zshrc
 			echo 'export PATH="/home/xu/.pyenv/bin:$PATH"' >> ~/.zshrc
