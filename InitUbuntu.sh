@@ -106,6 +106,15 @@ basicToolsInstall(){
 	aptInstall "vim"
 }
 
+commonTools(){
+	case ${1} in
+		1)
+			info "aria2 is a lightweight multi-protocol & multi-source command-line download utility"
+			aptInstall aria2
+			;;
+	esac
+}
+
 pythonDevelopEnv(){
 	case ${1} in
 		1)
