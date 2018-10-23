@@ -179,6 +179,21 @@ shellDevelopEnv(){
 	esac
 }
 
+guiTools(){
+	case ${1} in
+		1)
+			sudo add-apt-repository -y ppa:wireshark-dev/stable
+			sudo apt-get update > /dev/null
+			aptInstall wireshark
+			;;
+		2)
+			sudo add-apt-repository -y ppa:plushuang-tw/uget-stable
+			sudo apt-get update > /dev/null
+			sudo apt-get install uget
+			;;
+	esac
+}
+
 
 help(){
 	echo "Usage: bash InitUbuntu.sh [type] [target] [options]"
