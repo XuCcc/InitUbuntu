@@ -209,6 +209,8 @@ help(){
 	echo "	apt:    http://mirrors.ustc.edu.cn/ubuntu/"
 	echo "	pip:    https://pypi.tuna.tsinghua.edu.cn/simple"
 	echo "	docker: https://docker.mirrors.ustc.edu.cn"
+	echo "[common]"
+	echo "	aira2: A lightweight multi-protocol & multi-source command-line download utility"
 	echo "[python]"
 	echo "	pip: pip2&pip3"
 	echo "	pyenv: Simple Python version management"
@@ -272,6 +274,12 @@ main(){
 				;;
 			"source docker")
 				changeSourceForChina 3
+				;;
+			"common")
+				commonTools 1
+				;;
+			"common aira2")
+				commonTools 1
 				;;
 			"python")
 				pythonDevelopEnv 1
