@@ -1,4 +1,4 @@
 language: bash
 script:
-- echo -e "101\n0\n0\n0\n0\n0\n0\n0\n" |bash InitUbuntu.sh
+- bash InitUbuntu.sh
 sudo: required

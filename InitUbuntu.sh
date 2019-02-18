@@ -128,9 +128,9 @@ pythonDevelopEnv(){
 						xz-utils tk-dev libffi-dev liblzma-dev"
 			curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 			echo '# pyenv' >> ~/.zshrc
-			echo 'export PATH="/home/xu/.pyenv/bin:$PATH"' >> ~/.zshrc
-			echo '"$(pyenv init -)"' >> ~/.zshrc
-			echo '"$(pyenv virtualenv-init -)"' >> ~/.zshrc
+			echo 'export PATH="$HOME/.pyenv/bin:$PATH"' >> ~/.zshrc
+			echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+			echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
 			;;
 		3)
 			info "pipenv: Python Development Workflow for Humans"
