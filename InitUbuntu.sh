@@ -161,6 +161,15 @@ javaDevelopEnv(){
 	esac
 }
 
+javaScriptDevelopEnv(){
+	case ${1} in
+		1 )
+			info "nvm: Node Version Manager - Simple bash script to manage multiple active node.js versions"
+			curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+			;;
+	esac
+}
+
 dockerDevelopEnv(){
 	case ${1} in
 		1)
@@ -173,6 +182,7 @@ dockerDevelopEnv(){
 			;;
 	esac
 }
+
 
 shellDevelopEnv(){
 	case ${1} in
@@ -219,6 +229,8 @@ help(){
 	echo "[java]"
 	echo "	jdk: Oracle JDK"
 	echo "	maven: A software project management and comprehension tool"
+	echo "[javascript]"
+	echo "	nvm: Node Version Manager - Simple bash script to manage multiple active node.js versions"
 	echo "[docker]"
 	echo "	docker-ce: "
 	echo "	docker-compose: A tool for defining and running multi-container Docker applications"
@@ -308,6 +320,12 @@ main(){
 				;;
 			"java maven")
 				javaDevelopEnv 2
+				;;
+			"javascript")
+				javaScriptDevelopEnv 1
+				;;
+			"javascript nvm")
+				javaScriptDevelopEnv 1
 				;;
 			"docker")
 				dockerDevelopEnv 1
