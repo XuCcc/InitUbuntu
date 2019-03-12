@@ -104,6 +104,7 @@ basicToolsInstall(){
 	aptInstall "curl"
 	aptInstall "git"
 	aptInstall "vim"
+	aptInstall "sed"
 }
 
 commonTools(){
@@ -188,7 +189,7 @@ shellDevelopEnv(){
 	case ${1} in
 		1)
 			aptInstall "zsh"
-			sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+			sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh|sed 's/env zsh -l//g')"
 			;;
 		2)
 			info "zsh-syntax-highlighting"
