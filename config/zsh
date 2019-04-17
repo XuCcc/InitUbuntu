@@ -7,7 +7,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/half-life/oh-my-zsh/wiki/Themes
-ZSH_THEME="agnoster"
+ZSH_THEME="ys"
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
@@ -99,7 +99,4 @@ source $ZSH/oh-my-zsh.sh
 
 # alias
 alias tmux="tmux -2"                                                
-alias objdump="objdump -M intel" 
-alias gitssup="git config --global http.proxy 'socks5h://127.0.0.1:1080'&& git config --global https.proxy 'socks5h://127.0.0.1:1080'"
-alias gitssdown="git config --global --unset http.proxy && git config --global --unset https.proxy"
-alias ssup="sslocal -c ~/.ss.json"
+

@@ -110,8 +110,12 @@ basicToolsInstall(){
 commonTools(){
 	case ${1} in
 		1)
-			info "aria2 is a lightweight multi-protocol & multi-source command-line download utility"
+			info "aria2: a lightweight multi-protocol & multi-source command-line download utility"
 			aptInstall aria2
+			;;
+		2)
+			info "tldr: Simplified and community-driven man pages"
+			pip install tldr
 			;;
 	esac
 }
@@ -222,6 +226,7 @@ help(){
 	echo "	docker: https://docker.mirrors.ustc.edu.cn"
 	echo "[common]"
 	echo "	aira2: A lightweight multi-protocol & multi-source command-line download utility"
+	echo "	tldr: Simplified and community-driven man pages"
 	echo "[python]"
 	echo "	pip: pip2&pip3"
 	echo "	pyenv: Simple Python version management"
@@ -236,7 +241,7 @@ help(){
 	echo "	docker-ce: "
 	echo "	docker-compose: A tool for defining and running multi-container Docker applications"
 	echo "[shell]"
-	echo "	zsh:"
+	echo "	zsh: a delightful, open source, community-driven framework for managing your Zsh configuration."
 	echo "	zsh-syntax-highlighting: Fish shell like syntax highlighting for Zsh"
 	echo "	autojump: shell extension to jump to frequently used directories"
 	echo "	tmux: terminal multiplexer"
@@ -265,7 +270,7 @@ main(){
 		echo "Usage: bash InitUbuntu.sh [type] [target] [options]"
 		echo
 		echo "InitUbuntu.sh [--help|-h] [--version|-v] [--basic|-b]"
-		echo "	{update,source,python,java,docker,shell} [target]"
+		echo "	{update,source,python,java,javascript,docker,shell} [target]"
 		echo
 		cmdCheck curl
 		cmdCheck git
@@ -290,9 +295,13 @@ main(){
 				;;
 			"common")
 				commonTools 1
+				commonTools 2
 				;;
 			"common aira2")
 				commonTools 1
+				;;
+			"common tldr")
+				commonTools 2
 				;;
 			"python")
 				pythonDevelopEnv 1
