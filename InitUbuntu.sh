@@ -115,7 +115,7 @@ commonTools(){
 			;;
 		2)
 			info "tldr: Simplified and community-driven man pages"
-			pip install tldr
+			aptInstall tldr
 			;;
 	esac
 }
@@ -123,8 +123,8 @@ commonTools(){
 pythonDevelopEnv(){
 	case ${1} in
 		1)
-			info "pip2&pip3"
-			aptInstall "python-dev python-pip python3-dev python3-pip"
+			info "pip3"
+			aptInstall "python3-dev python3-pip"
 			;;
 		2)
 			info "pyenv: Simple Python version management"
@@ -139,13 +139,19 @@ pythonDevelopEnv(){
 			;;
 		3)
 			info "pipenv: Python Development Workflow for Humans"
-			pip install --user pipenv
+			if cmdCheck pip3 -eq 0
+			then
+				pip3 install --user pipenv
+			fi
 			echo '# pipenv' >> ~/.zshrc
 			echo 'alias pipenv="$HOME/.local/bin/pipenv"' >> ~/.zshrc
 			;;
 		4)
 			info "ptpython: an advanced Python REPL"
-			pip install ptpython
+			if cmdCheck pip3 -eq 0
+			then
+				pip3 install ptpython
+			fi
 			;;
 	esac
 }
@@ -183,32 +189,51 @@ dockerDevelopEnv(){
 			;;
 		2)
 			info "docker-compose: a tool for defining and running multi-container Docker applications"
-			pip install docker-compose
+			if cmdCheck pip3 -eq 0
+			then
+				pip3 install docker-compose
+			fi
 			;;
 	esac
 }
 
 
-shellDevelopEnv(){
+humansTerminal(){
 	case ${1} in
 		1)
 			aptInstall "zsh"
 			sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh|sed 's/env zsh -l//g')"
 			;;
 		2)
-			info "zsh-syntax-highlighting"
-			git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+			info "Configure ~/.zshrc"
+			info "Set theme to "ys""
+			sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="ys"/' ~/.zshrc
+			info "Enable plugin: extract"
+			sed -i 's/plugins=(/plugins=(extract /' ~/.zshrc
+			info "Enable plugin: sudo"
+			sed -i 's/plugins=(/plugins=(sudo /' ~/.zshrc
 			;;
 		3)
-			aptInstall "autojump"
+			info "Enable zsh plugin:zsh-syntax-highlighting"
+			git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+			sed -i 's/plugins=(/plugins=(zsh-syntax-highlighting /' ~/.zshrc
 			;;
 		4)
-			aptInstall "tmux"
+			info "Enable zsh plugin:autojump"
+			aptInstall "autojump"
+			sed -i 's/plugins=(/plugins=(autojump /' ~/.zshrc
 			;;
 		5)
-			info "Config zsh and tmux"
-			cp config/zsh ~/.zshrc
+			info "tmux"
+			aptInstall "tmux"
+			;;
+		6)
+			info "Configure ~/.tmux.conf"
+			info "Update hotkeys"
 			cp config/tmux ~/.tmux.conf
+			info "Install nord-tmux theme"
+			git clone https://github.com/arcticicestudio/nord-tmux ~/.tmux/themes/nord-tmux
+			echo "run-shell "~/.tmux/themes/nord-tmux/nord.tmux"" >> ~/.tmux.conf
 			;;
 	esac
 }
@@ -228,7 +253,7 @@ help(){
 	echo "	aira2: A lightweight multi-protocol & multi-source command-line download utility"
 	echo "	tldr: Simplified and community-driven man pages"
 	echo "[python]"
-	echo "	pip: pip2&pip3"
+	echo "	pip: pip3"
 	echo "	pyenv: Simple Python version management"
 	echo "	pipenv: Python Development Workflow for Humans"
 	echo "	ptpython: an advanced Python REPL"
@@ -240,12 +265,13 @@ help(){
 	echo "[docker]"
 	echo "	docker-ce: "
 	echo "	docker-compose: A tool for defining and running multi-container Docker applications"
-	echo "[shell]"
+	echo "[terminal]"
 	echo "	zsh: a delightful, open source, community-driven framework for managing your Zsh configuration."
+	echo "	Myzsh: custom ~/.zshrc"
 	echo "	zsh-syntax-highlighting: Fish shell like syntax highlighting for Zsh"
 	echo "	autojump: shell extension to jump to frequently used directories"
 	echo "	tmux: terminal multiplexer"
-	echo "	config: zsh&tmux config of Xu"
+	echo "	Mytmux: custom ~/.tmux.conf"
 	echo
 	echo "OPTIONS"
 	echo
@@ -347,27 +373,31 @@ main(){
 			"docker docker-compose")
 				dockerDevelopEnv 2
 				;;
-			"shell")
-				shellDevelopEnv 1
-				shellDevelopEnv 2
-				shellDevelopEnv 3
-				shellDevelopEnv 4
-				shellDevelopEnv 5
+			"terminal")
+				humansTerminal 1
+				humansTerminal 2
+				humansTerminal 3
+				humansTerminal 4
+				humansTerminal 5
+				humansTerminal 6
 				;;
-			"shell zsh")
-				shellDevelopEnv 1
+			"terminal zsh")
+				humansTerminal 1
 				;;
-			"shell zsh-syntax-highlighting")
-				shellDevelopEnv 2
+			"terminal zshrc")
+				humansTerminal 2
 				;;
-			"shell autojump")
-				shellDevelopEnv 3
+			"terminal zsh-syntax-highlighting")
+				humansTerminal 3
 				;;
-			"shell tmux")
-				shellDevelopEnv 4
+			"terminal autojump")
+				humansTerminal 4
 				;;
-			"shell config")
-				shellDevelopEnv 5
+			"terminal tmux")
+				humansTerminal 5
+				;;
+			"terminal tmux.conf")
+				humansTerminal 6
 				;;
 			--basic|-b)
 				basicToolsInstall
