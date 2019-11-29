@@ -1,4 +1,0 @@
-language: bash
-script:
-- bash InitUbuntu.sh
-sudo: required

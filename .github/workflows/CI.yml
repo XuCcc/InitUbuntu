@@ -1,0 +1,23 @@
+name: CI
+
+on: push
+
+jobs:
+  install:
+    name: Install Tools
+    runs-on: ubuntu-18.04
+    steps:
+      - name: help
+        run: ./InitUbuntu.sh -h
+      - name: common
+        run: ./InitUbuntu.sh common
+      - name: python
+        run: ./InitUbuntu.sh python
+      - name: java
+        run: ./InitUbuntu.sh java
+      - name: javascript
+        run: ./InitUbuntu.sh javascript
+      - name: docker
+        run: ./InitUbuntu.sh docker
+      - name: terminal
+        run: ./InitUbuntu.sh terminal
