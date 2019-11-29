@@ -117,6 +117,14 @@ commonTools(){
 			info "tldr: Simplified and community-driven man pages"
 			aptInstall tldr
 			;;
+		3)	
+			info "ag: A code-searching tool similar to ack, but faster."
+			aptInstall silversearcher-ag
+			;;
+		4)
+			info "fd: A simple, fast and user-friendly alternative to 'find'"
+			# Only support for Ubuntu 19.04 or newer
+			aptInstall fd-find
 	esac
 }
 
@@ -252,6 +260,8 @@ help(){
 	echo "[common]"
 	echo "	aira2: A lightweight multi-protocol & multi-source command-line download utility"
 	echo "	tldr: Simplified and community-driven man pages"
+	echo "	ag: A code-searching tool similar to ack, but faster."
+	echo "	fd: A simple, fast and user-friendly alternative to 'find'"
 	echo "[python]"
 	echo "	pip: pip3"
 	echo "	pyenv: Simple Python version management"
@@ -322,12 +332,20 @@ main(){
 			"common")
 				commonTools 1
 				commonTools 2
+				commonTools 3
+				commonTools 4
 				;;
 			"common aira2")
 				commonTools 1
 				;;
 			"common tldr")
 				commonTools 2
+				;;
+			"common ag")
+				commonTools 3
+				;;
+			"common fd")
+				commonTools 4
 				;;
 			"python")
 				pythonDevelopEnv 1
