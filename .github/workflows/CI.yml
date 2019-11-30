@@ -13,9 +13,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      
+
       - name: help
         run: ./InitUbuntu.sh -h
+      - name: basic
+        run: ./InitUbuntu.sh -b
       - name: common
         run: ./InitUbuntu.sh common
       - name: python

@@ -1,10 +1,20 @@
 <h1 align="center">Init Ubuntu</h1>
 
-[![Travis](https://img.shields.io/travis/XuCcc/InitUbuntu.svg?style=plastic)]()
-[![Github release](https://img.shields.io/badge/release-0.1.0-green.svg)](https://github.com/XuCcc/InitUbuntu/releases/tag/0.1.0)
-[![platform](https://img.shields.io/badge/platform-ubuntu-lightgrey.svg)]()
+![](https://github.com/XuCcc/InitUbuntu/workflows/CI/badge.svg)
+![](https://img.shields.io/badge/platform-ubuntu%2016.04%7C18.04-lightgrey)
 
 ![](.images/show.png)
+
+## Requires
+
+- `git&curl&sed` You can install them easily by `bash InitUbuntu.sh --basic`
+- **zsh** theme agnoster need [powerline fonts](https://github.com/powerline/fonts)
+
+## Support Os
+
+Now,InitUbuntu supports Ubuntu **16.04,18.04**.[Github actions](https://github.com/XuCcc/InitUbuntu/actions?query=workflow%3ACI+is%3Asuccess) will check **16.04|18.04** every time.Some tools maybe install unsuccessfully on other version.Welcome to [issues](https://github.com/XuCcc/InitUbuntu/issues/5).
+
+InitUbuntu maybe work well on Debian-like systems,because they use `apt` as package manager.
 
 ## Tools
 
@@ -19,6 +29,8 @@ Use `bash InitUbuntu.sh -h` to see support tools and help.
 [common]
         aira2: A lightweight multi-protocol & multi-source command-line download utility
         tldr: Simplified and community-driven man pages
+        ag: A code-searching tool similar to ack, but faster.
+        fd: A simple, fast and user-friendly alternative to 'find'
 [python]
         pip: pip3
         pyenv: Simple Python version management
@@ -30,7 +42,7 @@ Use `bash InitUbuntu.sh -h` to see support tools and help.
 [javascript]
         nvm: Node Version Manager - Simple bash script to manage multiple active node.js versions
 [docker]
-        docker-ce: 
+        docker-ce:
         docker-compose: A tool for defining and running multi-container Docker applications
 [terminal]
         zsh: a delightful, open source, community-driven framework for managing your Zsh configuration.
@@ -39,16 +51,9 @@ Use `bash InitUbuntu.sh -h` to see support tools and help.
         autojump: shell extension to jump to frequently used directories
         tmux: terminal multiplexer
         Mytmux: custom ~/.tmux.conf
-
 ```
 
 You can find **zsh&&tmux** profiles in `./config`
-
-## Requires
-
-- `git&curl` You can install them easily by `bash InitUbuntu.sh --basic`
-- **zsh** theme agnoster need [powerline fonts](https://github.com/powerline/fonts)
-
 
 
 > Submit any other useful develop tools in the issue.
