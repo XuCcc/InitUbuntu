@@ -18,6 +18,9 @@ jobs:
         run: ./InitUbuntu.sh -h
       - name: basic
         run: ./InitUbuntu.sh -b
+      - name: terminal
+        run: ./InitUbuntu.sh terminal
+
       - name: common
         run: ./InitUbuntu.sh common
       - name: python
@@ -28,5 +31,3 @@ jobs:
         run: ./InitUbuntu.sh javascript
       - name: docker
         run: ./InitUbuntu.sh docker
-      - name: terminal
-        run: ./InitUbuntu.sh terminal

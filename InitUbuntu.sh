@@ -159,7 +159,7 @@ pythonDevelopEnv() {
 	4)
 		info "ptpython: an advanced Python REPL"
 		if cmdCheck pip3 -eq 0; then
-			pip3 install ptpython
+			pip3 install --user ptpython
 		fi
 		;;
 	esac
@@ -198,7 +198,7 @@ dockerDevelopEnv() {
 	2)
 		info "docker-compose: a tool for defining and running multi-container Docker applications"
 		if cmdCheck pip3 -eq 0; then
-			pip3 install docker-compose
+			pip3 install --user docker-compose
 		fi
 		;;
 	esac
@@ -237,9 +237,9 @@ humansTerminal() {
 		info "Configure ~/.tmux.conf"
 		info "Update hotkeys"
 		cp config/tmux ~/.tmux.conf
-		info "Install nord-tmux theme"
-		git clone https://github.com/arcticicestudio/nord-tmux ~/.tmux/themes/nord-tmux
-		echo "run-shell "~/.tmux/themes/nord-tmux/nord.tmux"" >>~/.tmux.conf
+		# info "Install nord-tmux theme"
+		# git clone https://github.com/arcticicestudio/nord-tmux ~/.tmux/themes/nord-tmux
+		# echo "run-shell "~/.tmux/themes/nord-tmux/nord.tmux"" >>~/.tmux.conf
 		;;
 	esac
 }
