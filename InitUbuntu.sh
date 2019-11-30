@@ -151,7 +151,8 @@ pythonDevelopEnv() {
 	3)
 		info "pipenv: Python Development Workflow for Humans"
 		if cmdCheck pip3 -eq 0; then
-			pip3 install --user pipenv
+		# why not use pip3: https://stackoverflow.com/questions/49836676/error-after-upgrading-pip-cannot-import-name-main
+			python3 -m pip install --user pipenv
 		fi
 		echo '# pipenv' >>~/.zshrc
 		echo 'alias pipenv="$HOME/.local/bin/pipenv"' >>~/.zshrc
@@ -159,7 +160,7 @@ pythonDevelopEnv() {
 	4)
 		info "ptpython: an advanced Python REPL"
 		if cmdCheck pip3 -eq 0; then
-			pip3 install --user ptpython
+			python3 -m pip install --user ptpython
 		fi
 		;;
 	esac
@@ -198,7 +199,7 @@ dockerDevelopEnv() {
 	2)
 		info "docker-compose: a tool for defining and running multi-container Docker applications"
 		if cmdCheck pip3 -eq 0; then
-			pip3 install --user docker-compose
+			python3 -m pip install --user docker-compose
 		fi
 		;;
 	esac

@@ -8,13 +8,17 @@
 ## Requires
 
 - `git&curl&sed` You can install them easily by `bash InitUbuntu.sh --basic`
-- **zsh** theme agnoster need [powerline fonts](https://github.com/powerline/fonts)
+- `zsh` InitUbuntu will write env variables into ~/.zshrc. You can install `zsh` by `bash InitUbuntu.sh terminal zsh`
+
+*Optional*
+
+- zsh theme like `agnoster` needs [powerline fonts](https://github.com/powerline/fonts)
 
 ## Support Os
 
-Now,InitUbuntu supports Ubuntu **16.04,18.04**.[Github actions](https://github.com/XuCcc/InitUbuntu/actions?query=workflow%3ACI+is%3Asuccess) will check **16.04|18.04** every time.Some tools maybe install unsuccessfully on other version.Welcome to [issues](https://github.com/XuCcc/InitUbuntu/issues/5).
+Now,InitUbuntu supports Ubuntu **16.04,18.04**.[Github actions](https://github.com/XuCcc/InitUbuntu/actions?query=workflow%3ACI) will check **16.04|18.04** every time.Some tools maybe install unsuccessfully on other version.Welcome to [issues](https://github.com/XuCcc/InitUbuntu/issues/5).
 
-InitUbuntu maybe work well on Debian-like systems,because they use `apt` as package manager.
+InitUbuntu maybe work well on Debian-based systems,because they use `apt` as package manager.
 
 ## Tools
 
@@ -46,14 +50,13 @@ Use `bash InitUbuntu.sh -h` to see support tools and help.
         docker-compose: A tool for defining and running multi-container Docker applications
 [terminal]
         zsh: a delightful, open source, community-driven framework for managing your Zsh configuration.
-        Myzsh: custom ~/.zshrc
+        zshrc: custom ~/.zshrc
         zsh-syntax-highlighting: Fish shell like syntax highlighting for Zsh
         autojump: shell extension to jump to frequently used directories
         tmux: terminal multiplexer
-        Mytmux: custom ~/.tmux.conf
+        tmux.conf: custom ~/.tmux.conf
 ```
 
 You can find **zsh&&tmux** profiles in `./config`
-
 
 > Submit any other useful develop tools in the issue.
