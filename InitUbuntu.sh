@@ -124,9 +124,29 @@ commonTools() {
 		info "fd: A simple, fast and user-friendly alternative to 'find'"
 		# Only support for Ubuntu 19.04 or newer
 		# aptInstall fd-find
-		wget https://github.com/sharkdp/fd/releases/download/v7.4.0/fd_7.4.0_amd64.deb
-		sudo dpkg -i fd_7.4.0_amd64.deb
-		rm -f fd_7.4.0_amd64.deb
+		wget --no-check-certificate https://github.com/sharkdp/fd/releases/download/v8.2.1/fd_8.2.1_amd64.deb
+		sudo dpkg -i fd_8.2.1_amd64.deb
+		rm -f fd_8.2.1_amd64.deb	
+		;;
+	5)
+		# Only support for Ubuntu 19.10 or newer
+		# aptInstall bat
+		info "A cat(1) clone with syntax highlighting and Git integration."
+		wget --no-check-certificate https://github.com/sharkdp/bat/releases/download/v0.18.1/bat_0.18.1_amd64.deb
+		sudo dpkg -i bat_0.18.1_amd64.deb
+		rm -f bat_0.18.1_amd64.deb
+		;;
+	6)
+		# Only support for Ubuntu 20.10 or newer
+		# aptInstall exa
+		info "exa is a modern replacement for ls."
+		wget --no-check-certificate https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip
+		unzip exa-linux-x86_64-v0.10.1.zip
+		sudo mv bin/exa /usr/local/bin/
+		if [ -d "/usr/local/share/zsh/site-functions" ];then
+			cp completions/exa.zsh /usr/local/share/zsh/site-functions/
+		fi
+		rm -rf bin/ man/ completions/ exa-linux-x86_64-v0.10.1.zip
 		;;
 	esac
 }
@@ -140,7 +160,7 @@ pythonDevelopEnv() {
 	2)
 		info "pyenv: Simple Python version management"
 		aptInstall "make build-essential libssl-dev zlib1g-dev libbz2-dev
-						libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev
+						libreadline-dev libsqlite3-dev wget --no-check-certificate curl llvm libncurses5-dev libncursesw5-dev
 						xz-utils tk-dev libffi-dev liblzma-dev"
 		curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 		echo '# pyenv' >>~/.zshrc
@@ -156,12 +176,6 @@ pythonDevelopEnv() {
 		fi
 		echo '# pipenv' >>~/.zshrc
 		echo 'alias pipenv="$HOME/.local/bin/pipenv"' >>~/.zshrc
-		;;
-	4)
-		info "ptpython: an advanced Python REPL"
-		if cmdCheck pip3 -eq 0; then
-			python3 -m pip install --user ptpython
-		fi
 		;;
 	esac
 }
@@ -209,26 +223,29 @@ humansTerminal() {
 	case ${1} in
 	1)
 		aptInstall "zsh"
-		sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sed 's/env zsh -l//g')"
+		git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+		cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+		chsh -s $(which zsh)
 		;;
 	2)
 		info "Configure ~/.zshrc"
-		info "Set theme to "ys""
-		sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="ys"/' ~/.zshrc
+
+		info "Set theme to "Powerlevel10k""
+		git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+		sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
+
 		info "Enable plugin: extract"
 		sed -i 's/plugins=(/plugins=(extract /' ~/.zshrc
+
 		info "Enable plugin: sudo"
 		sed -i 's/plugins=(/plugins=(sudo /' ~/.zshrc
-		;;
-	3)
+
 		info "Enable zsh plugin:zsh-syntax-highlighting"
 		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 		sed -i 's/plugins=(/plugins=(zsh-syntax-highlighting /' ~/.zshrc
-		;;
-	4)
-		info "Enable zsh plugin:autojump"
-		aptInstall "autojump"
-		sed -i 's/plugins=(/plugins=(autojump /' ~/.zshrc
+		
+		info "Enable zsh plugin:z"
+		sed -i 's/plugins=(/plugins=(z /' ~/.zshrc
 		;;
 	5)
 		info "tmux"
@@ -260,11 +277,12 @@ help() {
 	echo "	tldr: Simplified and community-driven man pages"
 	echo "	ag: A code-searching tool similar to ack, but faster."
 	echo "	fd: A simple, fast and user-friendly alternative to 'find'"
+	echo "	bat: A cat(1) clone with syntax highlighting and Git integration."
+	echo "	exa: exa is a modern replacement for ls."
 	echo "[python]"
 	echo "	pip: pip3"
 	echo "	pyenv: Simple Python version management"
 	echo "	pipenv: Python Development Workflow for Humans"
-	echo "	ptpython: an advanced Python REPL"
 	echo "[java]"
 	echo "	jdk: Oracle JDK"
 	echo "	maven: A software project management and comprehension tool"
@@ -274,12 +292,10 @@ help() {
 	echo "	docker-ce: "
 	echo "	docker-compose: A tool for defining and running multi-container Docker applications"
 	echo "[terminal]"
-	echo "	zsh: a delightful, open source, community-driven framework for managing your Zsh configuration."
-	echo "	zshrc: custom ~/.zshrc"
-	echo "	zsh-syntax-highlighting: Fish shell like syntax highlighting for Zsh"
-	echo "	autojump: shell extension to jump to frequently used directories"
+	echo "	oh-my-zsh: a delightful, open source, community-driven framework for managing your Zsh configuration."
+	echo "	zshrc: Configure ~/.zshrc: Powerlevel10k;Plugins:extract/sudo/zsh-syntax-highlighting/z"
 	echo "	tmux: terminal multiplexer"
-	echo "	tmux.conf: custom ~/.tmux.conf"
+	echo "	tmux.conf: Configure ~/.tmux.conf"
 	echo
 	echo "OPTIONS"
 	echo
@@ -331,6 +347,8 @@ main() {
 			commonTools 2
 			commonTools 3
 			commonTools 4
+			commonTools 5
+			commonTools 6
 			;;
 		"common aira2")
 			commonTools 1
@@ -344,11 +362,16 @@ main() {
 		"common fd")
 			commonTools 4
 			;;
+		"common bat")
+			commonTools 5
+			;;
+		"common exa")
+			commonTools 6
+			;;
 		"python")
 			pythonDevelopEnv 1
 			pythonDevelopEnv 2
 			pythonDevelopEnv 3
-			pythonDevelopEnv 4
 			;;
 		"python pip")
 			pythonDevelopEnv 1
@@ -358,9 +381,6 @@ main() {
 			;;
 		"python pipenv")
 			pythonDevelopEnv 3
-			;;
-		"python ptpython")
-			pythonDevelopEnv 4
 			;;
 		"java")
 			javaDevelopEnv 1
@@ -391,8 +411,6 @@ main() {
 		"terminal")
 			humansTerminal 1
 			humansTerminal 2
-			humansTerminal 3
-			humansTerminal 4
 			humansTerminal 5
 			humansTerminal 6
 			;;
@@ -401,12 +419,6 @@ main() {
 			;;
 		"terminal zshrc")
 			humansTerminal 2
-			;;
-		"terminal zsh-syntax-highlighting")
-			humansTerminal 3
-			;;
-		"terminal autojump")
-			humansTerminal 4
 			;;
 		"terminal tmux")
 			humansTerminal 5

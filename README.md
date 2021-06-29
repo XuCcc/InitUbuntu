@@ -12,7 +12,7 @@
 
 *Optional*
 
-- zsh theme like `agnoster` needs [powerline fonts](https://github.com/powerline/fonts)
+- zsh theme like `agnoster` needs [powerline fonts](https://github.com/powerline/fonts) or [nerd-fonts](https://github.com/ryanoasis/nerd-fonts)
 
 ## Support Os
 
@@ -35,13 +35,14 @@ Use `bash InitUbuntu.sh -h` to see support tools and help.
         tldr: Simplified and community-driven man pages
         ag: A code-searching tool similar to ack, but faster.
         fd: A simple, fast and user-friendly alternative to 'find'
+        bat: A cat(1) clone with syntax highlighting and Git integration.
+        exa: exa is a modern replacement for ls.
 [python]
         pip: pip3
         pyenv: Simple Python version management
         pipenv: Python Development Workflow for Humans
-        ptpython: an advanced Python REPL
 [java]
-        jdk: Oracle JDK
+        jdk: Oracle JDK 8
         maven: A software project management and comprehension tool
 [javascript]
         nvm: Node Version Manager - Simple bash script to manage multiple active node.js versions
@@ -49,12 +50,10 @@ Use `bash InitUbuntu.sh -h` to see support tools and help.
         docker-ce:
         docker-compose: A tool for defining and running multi-container Docker applications
 [terminal]
-        zsh: a delightful, open source, community-driven framework for managing your Zsh configuration.
-        zshrc: custom ~/.zshrc
-        zsh-syntax-highlighting: Fish shell like syntax highlighting for Zsh
-        autojump: shell extension to jump to frequently used directories
+        oh-my-zsh: a delightful, open source, community-driven framework for managing your Zsh configuration.
+        zshrc: Configure ~/.zshrc: Powerlevel10k;Plugins:extract/sudo/zsh-syntax-highlighting/z
         tmux: terminal multiplexer
-        tmux.conf: custom ~/.tmux.conf
+        tmux.conf: Configure ~/.tmux.conf
 ```
 
 You can find **zsh&&tmux** profiles in `./config`
