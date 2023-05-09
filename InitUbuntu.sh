@@ -115,6 +115,8 @@ commonTools() {
 	2)
 		info "tldr: Simplified and community-driven man pages"
 		aptInstall tldr
+		mkdir -p ~/.local/share
+		tldr -u
 		;;
 	3)
 		info "ag: A code-searching tool similar to ack, but faster."
@@ -122,31 +124,16 @@ commonTools() {
 		;;
 	4)
 		info "fd: A simple, fast and user-friendly alternative to 'find'"
-		# Only support for Ubuntu 19.04 or newer
-		# aptInstall fd-find
-		wget --no-check-certificate https://github.com/sharkdp/fd/releases/download/v8.2.1/fd_8.2.1_amd64.deb
-		sudo dpkg -i fd_8.2.1_amd64.deb
-		rm -f fd_8.2.1_amd64.deb	
+		aptInstall fd-find
 		;;
 	5)
-		# Only support for Ubuntu 19.10 or newer
-		# aptInstall bat
 		info "A cat(1) clone with syntax highlighting and Git integration."
-		wget --no-check-certificate https://github.com/sharkdp/bat/releases/download/v0.18.1/bat_0.18.1_amd64.deb
-		sudo dpkg -i bat_0.18.1_amd64.deb
-		rm -f bat_0.18.1_amd64.deb
+		aptInstall bat
 		;;
 	6)
-		# Only support for Ubuntu 20.10 or newer
-		# aptInstall exa
 		info "exa is a modern replacement for ls."
-		wget --no-check-certificate https://github.com/ogham/exa/releases/download/v0.10.1/exa-linux-x86_64-v0.10.1.zip
-		unzip exa-linux-x86_64-v0.10.1.zip
-		sudo mv bin/exa /usr/local/bin/
-		if [ -d "/usr/local/share/zsh/site-functions" ];then
-			cp completions/exa.zsh /usr/local/share/zsh/site-functions/
-		fi
-		rm -rf bin/ man/ completions/ exa-linux-x86_64-v0.10.1.zip
+		aptInstall exa
+		echo 'alias ls=exa' >> ~/.zshrc
 		;;
 	esac
 }
@@ -252,12 +239,10 @@ humansTerminal() {
 		aptInstall "tmux"
 		;;
 	6)
-		info "Configure ~/.tmux.conf"
-		info "Update hotkeys"
-		cp config/tmux ~/.tmux.conf
-		# info "Install nord-tmux theme"
-		# git clone https://github.com/arcticicestudio/nord-tmux ~/.tmux/themes/nord-tmux
-		# echo "run-shell "~/.tmux/themes/nord-tmux/nord.tmux"" >>~/.tmux.conf
+		info "Install Oh my tmux theme"
+		git clone https://github.com/gpakosz/.tmux.git ~/.tmux
+		ln -sf ~/.tmux/.tmux.conf ~/.tmux.conf
+		cp ~/.tmux/.tmux.conf.local ~/.tmux.conf.local
 		;;
 	esac
 }
@@ -295,7 +280,7 @@ help() {
 	echo "	oh-my-zsh: a delightful, open source, community-driven framework for managing your Zsh configuration."
 	echo "	zshrc: Configure ~/.zshrc: Powerlevel10k;Plugins:extract/sudo/zsh-syntax-highlighting/z"
 	echo "	tmux: terminal multiplexer"
-	echo "	tmux.conf: Configure ~/.tmux.conf"
+	echo "	Oh my tmux: My self-contained, pretty & versatile tmux configuration"
 	echo
 	echo "OPTIONS"
 	echo
@@ -423,7 +408,7 @@ main() {
 		"terminal tmux")
 			humansTerminal 5
 			;;
-		"terminal tmux.conf")
+		"terminal .tmux")
 			humansTerminal 6
 			;;
 		--basic | -b)
