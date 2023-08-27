@@ -42,18 +42,18 @@ Use `bash InitUbuntu.sh -h` to see support tools and help.
         pyenv: Simple Python version management
         pipenv: Python Development Workflow for Humans
 [java]
-        jdk: Oracle JDK 8
+        jdk: openjdk-11
         maven: A software project management and comprehension tool
 [javascript]
         nvm: Node Version Manager - Simple bash script to manage multiple active node.js versions
 [docker]
         docker-ce:
         docker-compose: A tool for defining and running multi-container Docker applications
-[terminal]
-        oh-my-zsh: a delightful, open source, community-driven framework for managing your Zsh configuration.
+[shell]
+        zsh: a delightful, open source, community-driven framework for managing your Zsh configuration.
         zshrc: Configure ~/.zshrc: Powerlevel10k;Plugins:extract/sudo/zsh-syntax-highlighting/z
         tmux: terminal multiplexer
-        tmux.conf: Configure ~/.tmux.conf
+        .tmux: My self-contained, pretty & versatile tmux configuration
 ```
 
 You can find **zsh&&tmux** profiles in `./config`

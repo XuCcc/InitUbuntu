@@ -18,8 +18,8 @@ jobs:
         run: ./InitUbuntu.sh -h
       - name: basic
         run: ./InitUbuntu.sh -b
-      - name: terminal
-        run: ./InitUbuntu.sh terminal
+      - name: shell
+        run: ./InitUbuntu.sh shell
 
       - name: common
         run: ./InitUbuntu.sh common

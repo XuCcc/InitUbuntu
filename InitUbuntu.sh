@@ -116,7 +116,7 @@ commonTools() {
 		info "tldr: Simplified and community-driven man pages"
 		aptInstall tldr
 		mkdir -p ~/.local/share
-		tldr -u
+		tldr -u | tldr --update
 		;;
 	3)
 		info "ag: A code-searching tool similar to ack, but faster."
@@ -170,10 +170,8 @@ pythonDevelopEnv() {
 javaDevelopEnv() {
 	case ${1} in
 	1)
-		info "Oracle JDK"
-		sudo add-apt-repository -y ppa:webupd8team/java
-		sudo apt update >/dev/null
-		sudo apt install -y oracle-java8-set-default
+		info "openjdk"
+		aptInstall openjdk-11-jdk
 		;;
 	2)
 		info "maven: A software project management and comprehension tool"
@@ -186,7 +184,7 @@ javaScriptDevelopEnv() {
 	case ${1} in
 	1)
 		info "nvm: Node Version Manager - Simple bash script to manage multiple active node.js versions"
-		curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
+		curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.39.5/install.sh | bash
 		;;
 	esac
 }
@@ -269,18 +267,18 @@ help() {
 	echo "	pyenv: Simple Python version management"
 	echo "	pipenv: Python Development Workflow for Humans"
 	echo "[java]"
-	echo "	jdk: Oracle JDK"
+	echo "	jdk: openjdk-11"
 	echo "	maven: A software project management and comprehension tool"
 	echo "[javascript]"
 	echo "	nvm: Node Version Manager - Simple bash script to manage multiple active node.js versions"
 	echo "[docker]"
 	echo "	docker-ce: "
 	echo "	docker-compose: A tool for defining and running multi-container Docker applications"
-	echo "[terminal]"
-	echo "	oh-my-zsh: a delightful, open source, community-driven framework for managing your Zsh configuration."
+	echo "[shell]"
+	echo "	zsh: a delightful, open source, community-driven framework for managing your Zsh configuration."
 	echo "	zshrc: Configure ~/.zshrc: Powerlevel10k;Plugins:extract/sudo/zsh-syntax-highlighting/z"
 	echo "	tmux: terminal multiplexer"
-	echo "	Oh my tmux: My self-contained, pretty & versatile tmux configuration"
+	echo "	.tmux: My self-contained, pretty & versatile tmux configuration"
 	echo
 	echo "OPTIONS"
 	echo
@@ -393,22 +391,22 @@ main() {
 		"docker docker-compose")
 			dockerDevelopEnv 2
 			;;
-		"terminal")
+		"shell")
 			humansTerminal 1
 			humansTerminal 2
 			humansTerminal 5
 			humansTerminal 6
 			;;
-		"terminal zsh")
+		"shell zsh")
 			humansTerminal 1
 			;;
-		"terminal zshrc")
+		"shell zshrc")
 			humansTerminal 2
 			;;
-		"terminal tmux")
+		"shell tmux")
 			humansTerminal 5
 			;;
-		"terminal .tmux")
+		"shell .tmux")
 			humansTerminal 6
 			;;
 		--basic | -b)
