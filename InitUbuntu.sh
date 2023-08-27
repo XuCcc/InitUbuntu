@@ -116,7 +116,7 @@ commonTools() {
 		info "tldr: Simplified and community-driven man pages"
 		aptInstall tldr
 		mkdir -p ~/.local/share
-		tldr -u | tldr --update
+		tldr -u || tldr --update
 		;;
 	3)
 		info "ag: A code-searching tool similar to ack, but faster."
@@ -125,10 +125,12 @@ commonTools() {
 	4)
 		info "fd: A simple, fast and user-friendly alternative to 'find'"
 		aptInstall fd-find
+		echo 'alias find=fdfind' >> ~/.zshrc
 		;;
 	5)
 		info "A cat(1) clone with syntax highlighting and Git integration."
 		aptInstall bat
+		echo echo "alias cat='batcat --paging=never'" >> ~/.zshrc
 		;;
 	6)
 		info "exa is a modern replacement for ls."
